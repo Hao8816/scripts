@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         tyc-details
+// @name         [外网版]［天眼查］ 获取公司详情 2018-07-09
 // @namespace    https://github.com/Hao8816/scripts/
-// @version      0.7
+// @version      0.8
 // @description  [外网版]［天眼查］ 获取公司详情
 // @author       Vaster
 // @match        https://www.tianyancha.com/company/*
