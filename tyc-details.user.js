@@ -12,6 +12,9 @@
 
 (function() {
     'use strict';
+
+    // 怎么还不行呀
+
     String.prototype.startWith=function(str){
         if(str==null||str==""||this.length==0||str.length>this.length){
             return false;
