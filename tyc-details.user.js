@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         [外网版]［天眼查］ 获取公司详情 2018-07-09
 // @namespace    https://github.com/Hao8816/scripts/
-// @version      0.8
+// @version      0.8.1
 // @description  [外网版]［天眼查］ 获取公司详情
 // @author       Vaster
 // @match        https://www.tianyancha.com/company/*
@@ -12,9 +12,6 @@
 
 (function() {
     'use strict';
-
-    // 小王小王你真棒哈哈哈哈哈
-
     String.prototype.startWith=function(str){
         if(str==null||str==""||this.length==0||str.length>this.length){
             return false;
@@ -137,8 +134,6 @@
     console.log('公司类型:',company_type);
     console.log('经营范围:',bussiness_scope);
     
-    // 滴滴答答滴滴答答滴滴答答的傻逼
-   
     GM_xmlhttpRequest({
       method: "POST",
       url: monkey_url,
