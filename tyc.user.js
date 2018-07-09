@@ -1,18 +1,20 @@
 // ==UserScript==
-// @name         [外网版]［天眼查］ 获取公司详情
+// @name         tyc-details
 // @namespace    http://tampermonkey.net/
-// @version      0.2
-// @description  try to take over the world!
-// @author       You
+// @version      0.6
+// @description  [外网版]［天眼查］ 获取公司详情
+// @author       Vaster
 // @match        https://www.tianyancha.com/company/*
 // @require      http://cdn.bootcss.com/jquery/1.11.2/jquery.js
 // @grant        GM_xmlhttpRequest
-// @updateURL    https://github.com/Hao8816/scripts/edit/master/tyc.user.js
+// @updateURL    https://greasyfork.org/scripts/370150-tyc/code/tyc.user.js
 // ==/UserScript==
 
 (function() {
     'use strict';
-    
+
+    // 测试脚本更新操作｀    
+
     String.prototype.startWith=function(str){
         if(str==null||str==""||this.length==0||str.length>this.length){
             return false;
