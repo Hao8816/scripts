@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         [外网版]［天眼查］ 获取公司详情
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  try to take over the world!
 // @author       You
 // @match        https://www.tianyancha.com/company/*
