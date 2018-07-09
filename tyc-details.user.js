@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         tyc-details
-// @namespace    http://tampermonkey.net/
+// @namespace    https://github.com/Hao8816/scripts/
 // @version      0.6
 // @description  [外网版]［天眼查］ 获取公司详情
 // @author       Vaster
