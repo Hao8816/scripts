@@ -13,7 +13,7 @@
 (function() {
     'use strict';
 
-    // 测试脚本更新操作｀    
+    // 测试脚本更新12 
 
     String.prototype.startWith=function(str){
         if(str==null||str==""||this.length==0||str.length>this.length){
