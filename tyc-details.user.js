@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         tyc-details
 // @namespace    https://github.com/Hao8816/scripts/
-// @version      0.6
+// @version      0.7
 // @description  [外网版]［天眼查］ 获取公司详情
 // @author       Vaster
 // @match        https://www.tianyancha.com/company/*
@@ -13,7 +13,7 @@
 (function() {
     'use strict';
 
-    // 怎么还不行呀
+    // 小王小王你真棒哈哈哈哈哈
 
     String.prototype.startWith=function(str){
         if(str==null||str==""||this.length==0||str.length>this.length){
