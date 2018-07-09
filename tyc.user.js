@@ -7,7 +7,7 @@
 // @match        https://www.tianyancha.com/company/*
 // @require      http://cdn.bootcss.com/jquery/1.11.2/jquery.js
 // @grant        GM_xmlhttpRequest
-// @updateURL    https://greasyfork.org/scripts/370150-tyc/code/tyc.user.js
+// @updateURL    https://greasyfork.org/scripts/370150-tyc-details/code/tyc-details.user.js
 // ==/UserScript==
 
 (function() {
