@@ -16,7 +16,7 @@
     // 解析当前的页码数
     var current_url = window.location.pathname;
     var location_search = window.location.search;
-    var current_page_array = current_url.split('/search/p')
+    var current_page_array = current_url.split('/search/p');
     var current_page_num = 1;
     if (current_page_array.length>1){
         current_page_num = parseInt(current_page_array[1]);
