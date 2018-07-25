@@ -22,7 +22,6 @@
         current_page_num = parseInt(current_page_array[1]);
     }
     
-    var company_list = [];
     function getCompanyList(){
         // 获取列表
         var company_list = $('.search_result_container').find('.search_result_single');
@@ -34,10 +33,11 @@
             link_list.push({'name':company_name,'url':company_link});
         }
         return link_list;
-    } 
+    }; 
     
     // 解析公司信息 
-    company_list = getCompanyList();
+    var company_list = getCompanyList();
+    console.log(company_list);
     
     var monkey_url = 'http://127.0.0.1:8000/flow/api/v1/monkey/list/';
 
@@ -48,16 +48,16 @@
         // 判断每个按钮上的东西
         var page_num_text = $(pager_items[i]).text();
         page_num_list = page_num_list.concat(page_num_text.split('...'));
-    }
+    };
     
     // 去掉非数字的部分
     page_num_list.forEach(function(item){
         var num = parseInt(item);
         if (num && num>max_page_size){
-            max_page_size = num
+            max_page_size = num;
         }
     });
-    console.log(max_page_size)
+    console.log(max_page_size);
    
     // 自动翻页并解析当前的页面
     var next_page_num = current_page_num+1;
