@@ -24,7 +24,7 @@
     
     function getCompanyList(){
         // 获取列表
-        var company_list = $('.search_result_container').find('.search_result_single');
+        var company_list = $('.result-list').find('.search_result_single');
         console.log(company_list);
         var link_list = [];
         for(var i=0;i<company_list.length;i++){
