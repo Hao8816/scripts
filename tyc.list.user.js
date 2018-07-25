@@ -39,7 +39,7 @@
     // 解析公司信息 
     company_list = getCompanyList();
     
-    var monkey_url = 'http://113.57.174.82:10080/flow/api/v1/monkey/list/';
+    var monkey_url = 'http://127.0.0.1:8000/flow/api/v1/monkey/list/';
 
     var max_page_size = 1;
     var pager_items = $('.result-footer .pagination li').find('.num');
