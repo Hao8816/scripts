@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         tyc-list
 // @namespace    http://tampermonkey.net/
-// @version      0.2.4
+// @version      0.2.5
 // @description  [外网版]［天眼查］ 公司列表
 // @author       Vaster
 // @match        https://www.tianyancha.com/search*
@@ -28,7 +28,7 @@
         console.log(company_list);
         var link_list = [];
         for(var i=0;i<company_list.length;i++){
-            var company_link = $(company_list[i]).find('.query_name').attr('href');
+            var company_link = $(company_list[i]).find('.name').attr('href');
             var company_name = $(company_list[i]).find('.name').text();
             link_list.push({'name':company_name,'url':company_link});
         }
