@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         tyc-list
 // @namespace    http://tampermonkey.net/
-// @version      0.2.1
+// @version      0.2.2
 // @description  [外网版]［天眼查］ 公司列表
 // @author       Vaster
 // @match        https://www.tianyancha.com/search*
 // @require      http://cdn.bootcss.com/jquery/1.11.2/jquery.js
 // @grant        GM_xmlhttpRequest
-// @updateURL    https://github.com/Hao8816/scripts/raw/master/tyc.list.user.js
+// @updateURL    https://greasyfork.org/scripts/370591-tyc-list/code/tyc-list.user.js
 // ==/UserScript==
 
 (function() {
