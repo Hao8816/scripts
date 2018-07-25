@@ -36,8 +36,8 @@
     }; 
     
     // 解析公司信息 
-    var company_list = getCompanyList();
-    console.log(company_list);
+    var info_list = getCompanyList();
+    console.log(info_list);
     
     var monkey_url = 'http://127.0.0.1:8000/flow/api/v1/monkey/list/';
 
@@ -72,7 +72,7 @@
     GM_xmlhttpRequest({
       method: "POST",
       url: monkey_url,
-      data : JSON.stringify({'company_list':company_list}),
+      data : JSON.stringify({'company_list':info_list}),
       onload: function(response) {
          //这里写处理函数
          console.log(response);
