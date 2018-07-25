@@ -7,7 +7,7 @@
 // @match        https://www.tianyancha.com/search*
 // @require      http://cdn.bootcss.com/jquery/1.11.2/jquery.js
 // @grant        GM_xmlhttpRequest
-// @updateURL    https://github.com/Hao8816/scripts/raw/master/tyc.user.js
+// @updateURL    https://github.com/Hao8816/scripts/raw/master/tyc.list.user.js
 // ==/UserScript==
 
 (function() {
