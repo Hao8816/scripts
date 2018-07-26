@@ -18,4 +18,4 @@ https://tampermonkey.net/
     (4). 启动nodejs服务， npm start 端口默认是8000
 
 ### 结果展示
-    查看 /collected/data/result.json 文件
+    查看 /collected/data/result2018-07-26 16:04:00.json 文件
