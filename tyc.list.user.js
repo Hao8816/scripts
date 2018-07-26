@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         tyc-list
 // @namespace    http://tampermonkey.net/
-// @version      0.2.7
+// @version      0.2.8
 // @description  [外网版]［天眼查］ 公司列表
 // @author       Vaster
 // @match        https://www.tianyancha.com/search*
@@ -61,7 +61,7 @@
    
     // 自动翻页并解析当前的页面
     var next_page_num = current_page_num+1;
-    if (next_page_num>max_page_size){
+    if (current_page_num>max_page_size){
         console.log('数据爬取完毕');
         return;
     }
