@@ -6,3 +6,12 @@ body {
 a {
   color: #00B7FF;
 }
+
+
+.file-list{
+  padding: 10px;
+}
+.select-item{
+  width: 180px!important;
+  display: inline-block!important;
+}

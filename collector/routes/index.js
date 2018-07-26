@@ -6,4 +6,8 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: '数据收集器' });
 });
 
+router.get('/details/', function(req, res, next) {
+  res.render('details', { title: '数据收集器详情' });
+});
+
 module.exports = router;

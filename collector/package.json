@@ -15,6 +15,10 @@
   },
   "devDependencies": {
     "express": "^4.16.3",
-    "express-generator": "^4.16.0"
+    "express-generator": "^4.16.0",
+    "jfum": "^1.0.3",
+    "mysql": "^2.16.0",
+    "orm": "^5.0.2",
+    "sha1": "^1.1.1"
   }
 }

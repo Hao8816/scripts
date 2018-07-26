@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  div(ng-controller='detailsPageCtrl')
+    h3= title
+    div 请选择名称
+      select(class='form-control input-sm select-item')
+        option 1
+        option 2
+        option 3
+      button(class='btn btn-sm btn-primary') 开始处理
+    div
+      h2= content
+
+
+

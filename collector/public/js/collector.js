@@ -5,7 +5,7 @@ var app = angular.module('collector',['ngFileUpload']).run(function(){
 
 var API_URL = 'http://127.0.0.1:8000';
 // 文件上传
-app.controller('uploadPageCtrl', function uploadPageCtrl($scope, Upload){
+app.controller('uploadPageCtrl', function uploadPageCtrl($scope, $http,  Upload){
 
     // 文件上传部分逻辑
     $scope.upload = function (file) {
@@ -32,4 +32,26 @@ app.controller('uploadPageCtrl', function uploadPageCtrl($scope, Upload){
             }
         }
     };
+
+    // 获取文件列表
+    $scope.getFileList = function(page){
+        var url = API_URL+'/files/list/?page='+page+'&'+'size='+10;
+        $http.get(url).then(function(res){
+            var data = res['data']
+            var files = data['files'];
+            console.log('文件列表结果',files);
+
+            $scope.files = files;
+        })
+    };
+
+    // 默认获取
+    $scope.getFileList(1);
 });
+
+app.controller('detailsPageCtrl', function uploadPageCtrl($scope, Upload){
+
+    alert('我进来了')
+});
+
+
