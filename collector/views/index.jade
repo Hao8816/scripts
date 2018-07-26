@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  div(ng-controller='uploadPageCtrl')
+    h3= title
+    button(class='btn btn-sm btn-primary',ngf-select="uploadFiles($files)" multiple="multiple") 上传文件
+
+
