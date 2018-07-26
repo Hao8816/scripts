@@ -16,5 +16,5 @@
   "devDependencies": {
     "express": "^4.16.3",
     "express-generator": "^4.16.0"
-  },
+  }
 }
