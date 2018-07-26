@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         tyc-list
 // @namespace    http://tampermonkey.net/
-// @version      0.2.8
+// @version      0.3
 // @description  [外网版]［天眼查］ 公司列表
 // @author       Vaster
 // @match        https://www.tianyancha.com/search*
@@ -72,6 +72,7 @@
     GM_xmlhttpRequest({
       method: "POST",
       url: monkey_url,
+      headers: {'Content-Type': 'application/json'},
       data : JSON.stringify({'company_list':info_list}),
       onload: function(response) {
          //这里写处理函数
