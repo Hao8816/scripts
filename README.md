@@ -3,6 +3,8 @@
 
 ### 脚本自动更新网站
 https://greasyfork.org
+    (1). 天眼查公司列表脚本托管地址  https://greasyfork.org/scripts/370150-tyc-details/code/tyc-details.user.js
+    (2). 天眼查公司详情脚本托管地址  
 
 ### 脚本管理器
 https://tampermonkey.net/
