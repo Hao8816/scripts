@@ -65,7 +65,7 @@
         console.log('数据爬取完毕');
         return;
     }
-    var next_page_url = 'https://www.tianyancha.com/search/p'+next_page_num+location_search
+    var next_page_url = 'https://www.tianyancha.com/search/p'+next_page_num+location_search;
     console.log('下一个页面的url是',next_page_url);
      
     // 发送请求
