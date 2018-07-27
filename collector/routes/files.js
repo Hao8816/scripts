@@ -7,9 +7,14 @@ var SHA1 = require('sha1');
 var JFUM = require('jfum');
 var jfum = new JFUM({
     minFileSize: 1,                      // 1kB
-    maxFileSize: 5242880,                     // 5 mB
+    maxFileSize: 10242880,                     // 5 mB
     acceptFileTypes: /\.(csv|xls|xlsx)$/i    // 支持表格样式
 });
+
+var Gearman = require('abraxas');
+var client = Gearman.Client.connect({ servers: ['127.0.0.1:4730'], defaultEncoding:'utf8'});
+
+// 生成中间
 
 /* 文件上传. */
 router.post('/upload/',jfum.postHandler.bind(jfum),function(req, res) {
@@ -39,25 +44,36 @@ router.post('/upload/',jfum.postHandler.bind(jfum),function(req, res) {
                 console.log(fileName);
                 var dateTime = new Date().getTime();
                 var fileSha1 = SHA1(dateTime.toString()+fileName);
-                // save file record
-                // 将文件内容保存在mongodb
-                // 将文件信息持久化到数据库
-                Model.File.create([{
-                    time          : dateTime.toString(),    // 微博创建的时间
-                    sha1          : fileSha1,    // blog的sha1
-                    name          : fileName,    // 文件名称
-                    size          : fileSize,    // 文件的大小
-                    type          : fileType,    // 文件类型
-                    path          : filePath,    // 文件的存储路径
-                    creator_sha1  : "",          // 创建者信息
-                    content       : tempFile     //文件缩略图的内容
 
-                }],function (err,item){
-                    console.log(err);
-                    res.send(file);
+                // 存储csv
+                var data = {
+                    'path': file.path,
+                    'sha1': fileSha1
+                };
+                client.submitJob('save_file', JSON.stringify(data)).then(function (result) {
+                    var result = JSON.parse(result);
+                    if (result['status'] == 1){
+                        var csvPath = result['csv_path'];
+                        // 将文件信息持久化到数据库
+                        Model.File.create([{
+                            time          : dateTime.toString(),    // 微博创建的时间
+                            sha1          : fileSha1,    // blog的sha1
+                            name          : fileName,    // 文件名称
+                            size          : fileSize,    // 文件的大小
+                            type          : fileType,    // 文件类型
+                            path          : csvPath,    // 文件的存储路径
+                            creator_sha1  : "",          // 创建者信息
+                            content       : tempFile     //文件缩略图的内容
+
+                        }],function (err,item){
+                            console.log(err);
+                            res.send(file);
+                        });
+                    }else{
+                        res.send({ info: 'ERROR','result':result});
+                    }
                 });
             }
-
         }
     }
 });
@@ -79,6 +95,7 @@ router.get('/list/', function(req, res, next) {
 /* 文件详情 */
 router.get('/details/', function(req, res, next) {
     var query = req.query;
+    console.log('xxxxx',query);
     var file_sha1 = query['key'];
     var page = query['page'] || 1;
     var size = query['size'] || 10;
@@ -86,11 +103,87 @@ router.get('/details/', function(req, res, next) {
     Model.File.find({'sha1': file_sha1}).run(function (err, files) {
         console.log('xxxxx',files);
         var file = files[0];
-
-        res.render('details', { title: '数据收集器详情','content':file.content});
+        if (file.status == 0){
+            var data = {
+                'path': file.path,
+                'page': page,
+                'size': size
+            };
+            client.submitJob('read_file', JSON.stringify(data)).then(function (result) {
+                var result = JSON.parse(result);
+                res.send({ info: 'OK','result':result});
+            });
+        }else{
+            Model.Task.find({'file_sha1':file_sha1}).limit(size).offset(start_num).run(function (err, files) {
+                console.log(files);
+                var headers = ['任务名称','总页数','当前页数','创建时间','最后更新时间','状态'];
+                var columns = [];
+                for (var i=0;i<files.length;i++){
+                    var dic = {};
+                    var file = files[i];
+                    dic['任务名称'] = file.name;
+                    dic['总页数'] = file.total;
+                    dic['当前页数'] = file.current;
+                    dic['创建时间'] = file.time;
+                    dic['最后更新时间'] = file.update_time;
+                    dic['状态'] = file.status;
+                    columns.push(dic);
+                }
+                var result = {
+                    'headers': headers,
+                    'columns': columns
+                };
+                res.send({'info':'OK','result': result});
+            });
+        }
     });
-
 });
+
+
+/* 文件详情（处理任务） */
+router.post('/check/', function(req, res, next) {
+    var data = req.body;;
+    console.log('xxxxx',data);
+    var column_name = data['column_name'];
+    var file_sha1 = data['file_sha1'];
+    Model.File.find({'sha1': file_sha1}).run(function (err, files) {
+        console.log('xxxxx',files);
+        var file = files[0];
+        var data = {
+            'path': file.path,
+            'size': -1,
+            'column': column_name
+        };
+        client.submitJob('read_file', JSON.stringify(data)).then(function (result) {
+            var result = JSON.parse(result);
+            var columns = result['columns'];
+            var dateTime = new Date().getTime();
+            var task_list = [];
+            for (var i=0;i<columns.length;i++){
+                var taskName = columns[i][column_name];
+                var taskSha1 = SHA1(taskName);
+                var task = {
+                    time          : dateTime.toString(),
+                    sha1          : taskSha1,
+                    name          : taskName,
+                    total         : 0,
+                    current       : 0,
+                    update_time   : dateTime.toString(),
+                    file_sha1     : file_sha1
+                };
+                task_list.push(task);
+            }
+            Model.Task.create(task_list,function (err,items){
+                console.log(err);
+                res.send({ info: 'OK','result':items});
+            });
+        });
+        // 修改文件的处理状态
+        file.status = 1;
+        file.save();
+    });
+});
+
 
 /* 文件下载 */
 router.post('/download/', function(req, res, next) {

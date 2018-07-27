@@ -2,15 +2,24 @@ extends layout
 
 block content
   div(ng-controller='detailsPageCtrl')
-    h3= title
-    div 请选择名称
-      select(class='form-control input-sm select-item')
-        option 1
-        option 2
-        option 3
-      button(class='btn btn-sm btn-primary') 开始处理
     div
-      h2= content
+      h3= title
+      div 请选择名称
+        select(class='form-control input-sm select-item',ng-model='column_name')
+          option(ng-repeat='header in result.headers',value='{{header}}') {{header}}
+        button(class='btn btn-sm btn-primary',ng-click='checkFile()') 开始处理
+
+    div
+      table(class='table')
+        tr
+          th(ng-repeat='header in result.headers') {{header}}
+        tr(ng-repeat='column in result.columns')
+          td(ng-repeat='header in result.headers') {{column[header]}}
+
+      div
+        a(class='pager-btn {{page==details.page?"active":""}}' ng-repeat='page in pages',ng-href='/details/?key={{details.key}}&page={{page}}&size={{details.size}}') {{page}}
+
+
 
 
 

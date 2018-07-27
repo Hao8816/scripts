@@ -15,3 +15,26 @@ a {
   width: 180px!important;
   display: inline-block!important;
 }
+
+.details-btn{
+    padding: 0px 10px 0px 0px;
+}
+.delete-btn{
+    padding: 0px 10px 0px 0px;
+    color: red;
+}
+.pager-btn{
+    display: inline-block;
+    width: 30px;
+    padding: 4px 0px;
+    border: 1px solid #ddd;
+    text-align: center;
+    margin: 5px;
+    font-size: 13px;
+    color: #333;
+}
+.pager-btn.active{
+    background-color: #337ab7;
+    color: #fff;
+    border: 1px solid #337ab7;
+}
