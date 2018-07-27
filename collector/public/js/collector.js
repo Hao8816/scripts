@@ -49,7 +49,12 @@ app.controller('uploadPageCtrl', function uploadPageCtrl($scope, $http,  Upload)
     $scope.getFileList(1);
 });
 
-app.controller('detailsPageCtrl', function detailsPageCtrl($scope, $http, $window, Pager){
+app.controller('detailsPageCtrl', function detailsPageCtrl($scope, $http, $window, Pager, socket){
+
+    // 接受socket的更新消息
+    socket.on('task_update',function(res){
+       console.log(res);
+    });
 
     // 网页查询参数
     var query_params = $window.location.search;
@@ -92,17 +97,9 @@ app.controller('detailsPageCtrl', function detailsPageCtrl($scope, $http, $windo
         $http.post(url,params).then(function(res){
             var data = res['data'];
             console.log(data);
-//            $scope.result = data['result'];
-//            // 构造翻页信息
-//            Pager.pages(page,data['result']['max_page'],function(pages){
-//                $scope.pages = pages;
-//            });
-            console.log('文件列表结果',data);
+            location.href = 'details/?key='+key+'&page='+page+'&size='+size;
         });
-
-
     }
-
 });
 
 app.service( 'Pager', [function() {
@@ -143,5 +140,31 @@ app.service( 'Pager', [function() {
     };
     return service;
 }]);
+
+
+app.factory('socket', function ($rootScope) {
+    //var socket = io('http://www.tihub.cn:3000');
+    var socket = io('http://127.0.0.1:3000');
+    return {
+        on: function (eventName, callback) {
+            socket.on(eventName, function () {
+                var args = arguments;
+                $rootScope.$apply(function () {
+                    callback.apply(socket, args);
+                });
+            });
+        },
+        emit: function (eventName, data, callback) {
+            socket.emit(eventName, data, function () {
+                var args = arguments;
+                $rootScope.$apply(function () {
+                    if (callback) {
+                        callback.apply(socket, args);
+                    }
+                });
+            })
+        }
+    };
+});
 
 

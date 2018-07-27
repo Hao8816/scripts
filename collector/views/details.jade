@@ -4,7 +4,7 @@ block content
   div(ng-controller='detailsPageCtrl')
     div
       h3= title
-      div 请选择名称
+      div(ng-if='result.details.status==0') 请选择名称
         select(class='form-control input-sm select-item',ng-model='column_name')
           option(ng-repeat='header in result.headers',value='{{header}}') {{header}}
         button(class='btn btn-sm btn-primary',ng-click='checkFile()') 开始处理
@@ -14,7 +14,8 @@ block content
         tr
           th(ng-repeat='header in result.headers') {{header}}
         tr(ng-repeat='column in result.columns')
-          td(ng-repeat='header in result.headers') {{column[header]}}
+          td(ng-repeat='header in result.headers')
+            table-data-cell-item(name='column[header]',header='{{header}}')
 
       div
         a(class='pager-btn {{page==details.page?"active":""}}' ng-repeat='page in pages',ng-href='/details/?key={{details.key}}&page={{page}}&size={{details.size}}') {{page}}

@@ -20,8 +20,8 @@ var File = db.define("file",{
     type          : String,    // 文件类型
     path          : String,    // 文件的存储路径
     creator_sha1  : String,    // 创建者信息
-    content       : Buffer,     // 文件内容
-    status        : Number      // 文件处理状态
+    status        : Number,     // 文件处理状态
+    total         : Number      // 文件中记录的总条数
 
 },{
     // with in model method

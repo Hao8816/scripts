@@ -39,8 +39,6 @@ router.post('/upload/',jfum.postHandler.bind(jfum),function(req, res) {
                 var fileSize = file.size;
                 var fileType = file.mime;
                 var filePath = file.path;
-                var tempFile = fs.readFileSync(tempFilePath);
-                console.log(tempFile);
                 console.log(fileName);
                 var dateTime = new Date().getTime();
                 var fileSha1 = SHA1(dateTime.toString()+fileName);
@@ -61,12 +59,17 @@ router.post('/upload/',jfum.postHandler.bind(jfum),function(req, res) {
                             name          : fileName,    // 文件名称
                             size          : fileSize,    // 文件的大小
                             type          : fileType,    // 文件类型
-                            path          : csvPath,    // 文件的存储路径
+                            path          : csvPath,     // 文件的存储路径
                             creator_sha1  : "",          // 创建者信息
-                            content       : tempFile     //文件缩略图的内容
+                            status        : 0            //文件状态
 
                         }],function (err,item){
-                            console.log(err);
+                            if (err){
+                                console.log(err);
+                                return res.send({'info':'ERROR'});
+                            }
+
+                            console.log('文件保存成功');
                             res.send(file);
                         });
                     }else{
@@ -97,8 +100,8 @@ router.get('/details/', function(req, res, next) {
     var query = req.query;
     console.log('xxxxx',query);
     var file_sha1 = query['key'];
-    var page = query['page'] || 1;
-    var size = query['size'] || 10;
+    var page = parseInt(query['page']) || 1;
+    var size = parseInt(query['size']) || 10;
     var start_num = (page-1)*size;
     Model.File.find({'sha1': file_sha1}).run(function (err, files) {
         console.log('xxxxx',files);
@@ -111,27 +114,38 @@ router.get('/details/', function(req, res, next) {
             };
             client.submitJob('read_file', JSON.stringify(data)).then(function (result) {
                 var result = JSON.parse(result);
+                result['details'] = file;
                 res.send({ info: 'OK','result':result});
             });
         }else{
-            Model.Task.find({'file_sha1':file_sha1}).limit(size).offset(start_num).run(function (err, files) {
-                console.log(files);
-                var headers = ['任务名称','总页数','当前页数','创建时间','最后更新时间','状态'];
+            Model.Task.find({'file_sha1':file_sha1}).limit(size).offset(start_num).run(function (err, tasks) {
+                console.log(tasks);
+                var headers = ['任务名称','创建时间','总页数','当前页数','状态','最后更新时间'];
                 var columns = [];
-                for (var i=0;i<files.length;i++){
+                for (var i=0;i<tasks.length;i++){
                     var dic = {};
-                    var file = files[i];
-                    dic['任务名称'] = file.name;
-                    dic['总页数'] = file.total;
-                    dic['当前页数'] = file.current;
-                    dic['创建时间'] = file.time;
-                    dic['最后更新时间'] = file.update_time;
-                    dic['状态'] = file.status;
+                    var task = tasks[i];
+                    dic['任务名称'] = task.name;
+                    dic['总页数'] = task.total;
+                    dic['当前页数'] = task.current;
+                    dic['创建时间'] = task.time;
+                    dic['最后更新时间'] = task.update_time;
+                    dic['状态'] = task.status;
                     columns.push(dic);
+                }
+
+                var total_counts = parseInt(file.total);
+                if (total_counts % size == 0){
+                    var max_page = total_counts/size;
+                }else{
+                    var max_page = total_counts/size + 1;
                 }
                 var result = {
                     'headers': headers,
-                    'columns': columns
+                    'columns': columns,
+                    'max_page': max_page,
+                    'total': total_counts,
+                    'details': file
                 };
                 res.send({'info':'OK','result': result});
             });
@@ -142,7 +156,7 @@ router.get('/details/', function(req, res, next) {
 
 /* 文件详情（处理任务） */
 router.post('/check/', function(req, res, next) {
-    var data = req.body;;
+    var data = req.body;
     console.log('xxxxx',data);
     var column_name = data['column_name'];
     var file_sha1 = data['file_sha1'];
@@ -177,10 +191,13 @@ router.post('/check/', function(req, res, next) {
                 console.log(err);
                 res.send({ info: 'OK','result':items});
             });
+
+            // 修改文件的处理状态
+            file.status = 1;
+            file.total = result['total'];
+            file.save();
         });
-        // 修改文件的处理状态
-        file.status = 1;
-        file.save();
+
     });
 });
 
