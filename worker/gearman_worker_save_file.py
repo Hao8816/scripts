@@ -51,6 +51,7 @@ def save_file_listener(gearman_worker, gearman_job):
     except:
         job_data['file_status'] = 0
 
+    print "处理完成"
     return json.dumps(job_data)
 
 # 注册worker

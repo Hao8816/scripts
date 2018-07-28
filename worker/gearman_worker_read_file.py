@@ -60,6 +60,8 @@ def read_file_listener(gearman_worker, gearman_job):
     job_data['columns'] = columns
     job_data['total'] = total_counts
     job_data['max_page'] = max_page
+
+    print "处理完成"
     return json.dumps(job_data)
 
 # 注册worker

@@ -26,7 +26,7 @@ var url_prefix = '/flow/api/v1';
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/files', filesRouter);
-app.use(url_prefix, apiRouter);
+app.use('/monkey', apiRouter);
 
 
 // catch 404 and forward to error handler

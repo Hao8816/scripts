@@ -43,8 +43,22 @@ var Task = db.define("task",{
 });
 
 
+// 任务执行的结果
+var TaskResult = db.define("task_result",{
+    time          : String,    // 任务创建的时间
+    task_sha1     : String,    // task的sha1
+    name          : String,    // 文件名称
+    url           : String,    // 任务下的url
+    info          : Object,    // 存储字段
+    status        : Number,    // 爬取状态
+    update_time   : String     // 最后更新时间
+},{
+    // with in model method
+});
+
 db.sync();
 
 models['File'] = File;
 models['Task'] = Task;
+models['TaskResult'] = TaskResult;
 module.exports = models;

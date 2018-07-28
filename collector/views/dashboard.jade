@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  div(ng-controller='uploadPageCtrl')
+    h3= title
+    button(class='btn btn-sm btn-primary',ngf-select="uploadFiles($files)" multiple="multiple") 上传文件
+    div(class='file-list')
+      table(class='table')
+        tr
+          th 名称
+          th 大小
+          th 上传时间
+          th 类型
+          th 状态
+          th 操作
+
+        tr(ng-repeat='file in files')
+          td {{file.name}}
+          td {{file.size}}
+          td {{file.time}}
+          td {{file.type}}
+          td {{file.status}}
+          td
+            a(class='details-btn',href='/details/?key={{file.sha1}}') 详情
+            a(class='delete-btn',href='') 删除
+
+
+
+
