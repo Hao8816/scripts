@@ -50,7 +50,8 @@ router.post('/upload/',jfum.postHandler.bind(jfum),function(req, res) {
                 };
                 client.submitJob('save_file', JSON.stringify(data)).then(function (result) {
                     var result = JSON.parse(result);
-                    if (result['status'] == 1){
+                    console.log('文件',result);
+                    if (result['file_status'] == 1){
                         var csvPath = result['csv_path'];
                         // 将文件信息持久化到数据库
                         Model.File.create([{
@@ -170,11 +171,17 @@ router.post('/check/', function(req, res, next) {
         };
         client.submitJob('read_file', JSON.stringify(data)).then(function (result) {
             var result = JSON.parse(result);
+            console.log('文件截取后内容',result);
             var columns = result['columns'];
             var dateTime = new Date().getTime();
             var task_list = [];
             for (var i=0;i<columns.length;i++){
+                console.log(columns[i],column_name);
                 var taskName = columns[i][column_name];
+                console.log('任务名称',taskName);
+                if (!taskName){
+                    continue;
+                }
                 var taskSha1 = SHA1(taskName);
                 var task = {
                     time          : dateTime.toString(),
@@ -189,7 +196,7 @@ router.post('/check/', function(req, res, next) {
             }
             Model.Task.create(task_list,function (err,items){
                 console.log(err);
-                res.send({ info: 'OK','result':items});
+                res.send({ info: 'OK'});
             });
 
             // 修改文件的处理状态

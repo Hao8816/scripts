@@ -4,7 +4,7 @@ block content
   div(ng-controller='detailsPageCtrl')
     div
       h3= title
-      div(ng-if='result.details.status==0') 请选择名称
+      div(ng-show='result.details.status==0') 请选择名称
         select(class='form-control input-sm select-item',ng-model='column_name')
           option(ng-repeat='header in result.headers',value='{{header}}') {{header}}
         button(class='btn btn-sm btn-primary',ng-click='checkFile()') 开始处理

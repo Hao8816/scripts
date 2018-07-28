@@ -109,7 +109,7 @@ app.controller('detailsPageCtrl', function detailsPageCtrl($scope, $http, $windo
         $http.post(url,params).then(function(res){
             var data = res['data'];
             console.log(data);
-            location.href = 'details/?key='+key+'&page='+page+'&size='+size;
+            location.href = '/details/?key='+key+'&page='+page+'&size='+size;
         });
     }
 });
