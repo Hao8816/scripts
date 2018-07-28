@@ -1,10 +1,12 @@
 // ==UserScript==
 // @name         爬虫启动
 // @namespace    http://tampermonkey.net/
-// @version      0.1.1
+// @version      0.1.2
 // @description  获取任务脚本
 // @author       Vaster
 // @match        http*://*/*
+// @exclude      https://www.tianyancha.com/company/*
+// @exclude      https://www.tianyancha.com/search*
 // @require      http://cdn.bootcss.com/jquery/1.11.2/jquery.js
 // @grant        GM_xmlhttpRequest
 // @updateURL    https://greasyfork.org/scripts/370687-%E7%88%AC%E8%99%AB%E5%90%AF%E5%8A%A8/code/%E7%88%AC%E8%99%AB%E5%90%AF%E5%8A%A8.user.js
@@ -20,9 +22,12 @@
         method: "GET",
         url: task_url,
         headers: {'Content-Type': 'application/json'},
-        onload: function(response) {
+        onload: function(res) {
             // 解析返回信息
-            console.log(response)
+            console.log(res);
+            var task = JSON.parse(res.response);
+            var task_url = task['url'];
+            window.open(task_url);
         }
     });
 })();
