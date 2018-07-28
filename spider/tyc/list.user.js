@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         任务结果列表
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.1.1
 // @description  [外网版]［天眼查］ 公司列表
 // @author       Vaster
 // @match        https://www.tianyancha.com/search*
 // @require      http://cdn.bootcss.com/jquery/1.11.2/jquery.js
 // @grant        GM_xmlhttpRequest
-// @updateURL    https://greasyfork.org/scripts/370591-tyc-list/code/tyc-list.user.js
+// @updateURL    https://greasyfork.org/scripts/370688-%E4%BB%BB%E5%8A%A1%E7%BB%93%E6%9E%9C%E5%88%97%E8%A1%A8/code/%E4%BB%BB%E5%8A%A1%E7%BB%93%E6%9E%9C%E5%88%97%E8%A1%A8.user.js
 // ==/UserScript==
 
 (function() {

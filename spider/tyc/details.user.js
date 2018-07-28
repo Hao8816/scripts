@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         任务结果详情
 // @namespace    https://github.com/Hao8816/scripts/
-// @version      0.1
+// @version      0.1.1
 // @description  [外网版]［天眼查］ 获取公司详情
 // @author       Vaster
 // @match        https://www.tianyancha.com/company/*
 // @require      http://cdn.bootcss.com/jquery/1.11.2/jquery.js
 // @grant        GM_xmlhttpRequest
-// @updateURL    https://greasyfork.org/scripts/370150-tyc-details/code/tyc-details.user.js
+// @updateURL    https://greasyfork.org/scripts/370689-%E4%BB%BB%E5%8A%A1%E7%BB%93%E6%9E%9C%E8%AF%A6%E6%83%85/code/%E4%BB%BB%E5%8A%A1%E7%BB%93%E6%9E%9C%E8%AF%A6%E6%83%85.user.js
 // ==/UserScript==
 
 (function() {

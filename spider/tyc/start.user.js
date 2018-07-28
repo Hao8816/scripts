@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         爬虫启动
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.1.1
 // @description  获取任务脚本
 // @author       Vaster
 // @match        http*://*/*
 // @require      http://cdn.bootcss.com/jquery/1.11.2/jquery.js
 // @grant        GM_xmlhttpRequest
-// @updateURL    https://greasyfork.org/scripts/370591-tyc-list/code/tyc-list.user.js
+// @updateURL    https://greasyfork.org/scripts/370687-%E7%88%AC%E8%99%AB%E5%90%AF%E5%8A%A8/code/%E7%88%AC%E8%99%AB%E5%90%AF%E5%8A%A8.user.js
 // ==/UserScript==
 
 (function() {
