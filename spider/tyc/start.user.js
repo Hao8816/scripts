@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         爬虫启动
 // @namespace    http://tampermonkey.net/
-// @version      0.1.2
+// @version      0.1.3
 // @description  获取任务脚本
 // @author       Vaster
 // @match        http*://*/*
@@ -25,7 +25,7 @@
         onload: function(res) {
             // 解析返回信息
             console.log(res);
-            var task = JSON.parse(res.response);
+            var task = eval(res.response);
             var task_url = task['url'];
             window.open(task_url);
         }
