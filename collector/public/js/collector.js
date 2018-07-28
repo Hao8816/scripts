@@ -51,9 +51,16 @@ app.controller('uploadPageCtrl', function uploadPageCtrl($scope, $http,  Upload)
 
 app.controller('detailsPageCtrl', function detailsPageCtrl($scope, $http, $window, Pager, socket){
 
+    var task_hash = {};
     // 接受socket的更新消息
     socket.on('task_update',function(res){
        console.log(res);
+        var task_name = res['name'];
+        if (task_hash.hasOwnProperty(task_name)){
+            var task_index = task_hash[task_name];
+            $scope.result.columns[task_index]['总页数'] = res['total'];
+            $scope.result.columns[task_index]['当前页数'] = res['current'];
+        }
     });
 
     // 网页查询参数
@@ -71,13 +78,18 @@ app.controller('detailsPageCtrl', function detailsPageCtrl($scope, $http, $windo
     var key = $scope.getParam('key');
     var page = $scope.getParam('page') || 1;
     var size = $scope.getParam('size') || 10;
-    $scope.details = {'key': key, 'page': page,'size': size}
+    $scope.details = {'key': key, 'page': page,'size': size};
 
     // 获取文件列表
     var url = API_URL+'/files/details/?key='+key+'&page='+page+'&size='+size;
     $http.get(url).then(function(res){
         var data = res['data'];
         $scope.result = data['result'];
+
+        $scope.result['columns'].forEach(function(item,index){
+            task_hash[item['任务名称']] = index;
+        });
+
         // 构造翻页信息
         Pager.pages(page,data['result']['max_page'],function(pages){
             $scope.pages = pages;
