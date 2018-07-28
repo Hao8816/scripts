@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         爬虫启动
 // @namespace    http://tampermonkey.net/
-// @version      0.1.5
+// @version      0.1.6
 // @description  获取任务脚本
 // @author       Vaster
 // @match        http*://*/*
@@ -28,6 +28,7 @@
             console.log(res);
             var task = res.response;
             var task_url = task['url'];
+            console.log('需要爬取的url',task_url);
             window.open(task_url);
         }
     });
