@@ -35,21 +35,21 @@ def save_file_listener(gearman_worker, gearman_job):
             df = pd.read_excel(file_path, index_col=None, na_values=['NA'])
         else:
             print "暂不支持的文件"
-            job_data['status'] = 0
+            job_data['file_status'] = 0
             json.dumps(job_data)
     except:
         # 返回默认数据
-        job_data['status'] = 0
+        job_data['file_status'] = 0
         return json.dumps(job_data)
 
     # 文件存储路径
     save_path = csv_path+file_sha1+'.csv'
     try:
         df.to_csv(save_path, encoding='utf-8')
-        job_data['status'] = 1
+        job_data['file_status'] = 1
         job_data['csv_path'] = save_path
     except:
-        job_data['status'] = 0
+        job_data['file_status'] = 0
 
     return json.dumps(job_data)
 

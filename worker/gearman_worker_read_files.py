@@ -55,7 +55,7 @@ def read_file_listener(gearman_worker, gearman_job):
     for ix, row in df.iterrows():
         columns.append(row.to_dict())
 
-    job_data['status'] = 1
+    job_data['file_status'] = 1
     job_data['headers'] = headers
     job_data['columns'] = columns
     job_data['total'] = total_counts
