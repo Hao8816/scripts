@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         任务结果列表
 // @namespace    http://tampermonkey.net/
-// @version      0.2.1
+// @version      0.2.2
 // @description  [外网版]［天眼查］ 公司列表
 // @author       Vaster
 // @match        https://www.tianyancha.com/search*
@@ -22,6 +22,14 @@
         current_page_num = parseInt(current_page_array[1]);
     }
 
+    var doc = document.getElementsByTagName('html')[0].innerHTML;
+    // 检查字符串是不是503请求
+    if (doc.indexOf('503 Service Temporarily Unavailable')){
+        // 刷新当前页面
+        window.location.reload();
+        return;
+    }
+
     function getParam (name) {
         var re = new RegExp("[&,?]" + name + "=([^//&]*)", "i");
         var a = re.exec(location_search);
@@ -32,13 +40,6 @@
     
     function getCompanyList(){
         // 解析网页内容
-        var doc = document.getElementsByTagName('html')[0].innerHTML;
-        // 检查字符串是不是503请求
-        if (doc.indexOf('503 Service Temporarily Unavailable')){
-            // 刷新当前页面
-            window.location.reload();
-            return;
-        }
         var DOM = $(doc);
 
         // 获取列表
