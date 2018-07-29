@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         任务结果列表
 // @namespace    http://tampermonkey.net/
-// @version      0.2.2
+// @version      0.2.3
 // @description  [外网版]［天眼查］ 公司列表
 // @author       Vaster
 // @match        https://www.tianyancha.com/search*
@@ -24,7 +24,7 @@
 
     var doc = document.getElementsByTagName('html')[0].innerHTML;
     // 检查字符串是不是503请求
-    if (doc.indexOf('503 Service Temporarily Unavailable')){
+    if (doc.indexOf('503 Service Temporarily Unavailable')>0){
         // 刷新当前页面
         window.location.reload();
         return;
