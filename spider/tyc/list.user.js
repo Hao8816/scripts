@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         任务结果列表
 // @namespace    http://tampermonkey.net/
-// @version      0.1.2
+// @version      0.1.3
 // @description  [外网版]［天眼查］ 公司列表
 // @author       Vaster
 // @match        https://www.tianyancha.com/search*
@@ -78,7 +78,7 @@
       method: "POST",
       url: monkey_url,
       headers: {'Content-Type': 'application/json'},
-      data : JSON.stringify({'name': getParam('key'),'result':info_list}),
+      data : JSON.stringify({'name': decodeURIComponent(escape(getParam('key'))),'result':info_list}),
       onload: function(response) {
          //这里写处理函数
          console.log(response);
