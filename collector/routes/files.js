@@ -126,14 +126,14 @@ router.get('/details/', function(req, res, next) {
         }else{
             Model.Task.find({'file_sha1':file_sha1}).limit(size).offset(start_num).run(function (err, tasks) {
                 console.log(tasks);
-                var headers = ['任务名称','创建时间','总页数','当前页数','状态','最后更新时间'];
+                var headers = ['任务名称','创建时间','总页数','已完成','状态','最后更新时间'];
                 var columns = [];
                 for (var i=0;i<tasks.length;i++){
                     var dic = {};
                     var task = tasks[i];
                     dic['任务名称'] = task.name;
                     dic['总页数'] = task.total;
-                    dic['当前页数'] = task.current;
+                    dic['已完成'] = task.current;
                     dic['创建时间'] = task.time;
                     dic['最后更新时间'] = task.update_time;
                     dic['状态'] = task.status;
