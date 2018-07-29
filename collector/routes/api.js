@@ -32,6 +32,7 @@ router.post('/details/$', function(req, res, next) {
 router.post('/result/$', function(req, res, next) {
     // 处理一下
     var data = req.body;
+    console.log('爬虫返回数据',data);
     var task_info = data['task'];
     var result_list = data['result'];
     // 查询任务的信息

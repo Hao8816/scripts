@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         任务结果列表
 // @namespace    http://tampermonkey.net/
-// @version      0.1.5
+// @version      0.1.6
 // @description  [外网版]［天眼查］ 公司列表
 // @author       Vaster
 // @match        https://www.tianyancha.com/search*
@@ -31,8 +31,12 @@
     }
     
     function getCompanyList(){
+        // 解析网页内容
+        var doc = document.getElementsByTagName('html')[0].innerHTML;
+        var DOM = $(doc);
+
         // 获取列表
-        var company_list = $('.result-list').find('.search-result-single');
+        var company_list = DOM.find('.result-list').find('.search-result-single');
         console.log(company_list);
         var link_list = [];
         for(var i=0;i<company_list.length;i++){
