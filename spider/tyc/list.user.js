@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         任务结果列表
 // @namespace    http://tampermonkey.net/
-// @version      0.2.3
+// @version      0.2.4
 // @description  [外网版]［天眼查］ 公司列表
 // @author       Vaster
 // @match        https://www.tianyancha.com/search*
@@ -61,7 +61,7 @@
     
     var monkey_url = 'http://127.0.0.1:8000/monkey/result/';
 
-    var max_page_size = 1;
+    var max_page_size = 0;
     var pager_items = $('.result-footer .pagination li').find('.num');
     var page_num_list = [];
     for(var i=0;i<pager_items.length;i++){
@@ -97,7 +97,7 @@
           if (next_page_num>max_page_size){
               console.log('数据爬取完毕');
               // 自动启动下一个任务
-              if(max_page_size >1){
+              if(max_page_size == 0){
                   window.location.href = 'https://www.baidu.com';
               }else{
                   console.log('可能出现异常，需要确认处理');
