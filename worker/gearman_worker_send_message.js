@@ -4,14 +4,10 @@ var client = Gearman.Client.connect({ servers: ['127.0.0.1:4730'], defaultEncodi
 var socket = require('socket.io-client')('http://127.0.0.1:3000');
 socket.on('connect', function(){
     console.log("系统链接成功");
+    socket.emit('task_update',{'name':'大参林医药集团股份有限公司','total':'1112','current':'323'})
 });
 socket.on('disconnect', function(){});
 
-function sendMessage(task){
-    console.log('消息系统',task.payload);
-    var data = JSON.parse(task.payload);
-    socket.emit('task_update',data);
-}
 client.registerWorker("send_message", function(task) {
     task.end(sendMessage(task));
 });
