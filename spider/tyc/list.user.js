@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         任务结果列表
 // @namespace    http://tampermonkey.net/
-// @version      0.1.6
+// @version      0.1.7
 // @description  [外网版]［天眼查］ 公司列表
 // @author       Vaster
 // @match        https://www.tianyancha.com/search*
@@ -41,7 +41,8 @@
         var link_list = [];
         for(var i=0;i<company_list.length;i++){
             var company_link = $(company_list[i]).find('.name').attr('href');
-            var company_name = $(company_list[i]).find('.name').text();
+            var company_name_dom = '<div>'+$(company_list[i]).find('.left-item .expand-img').attr('alt')+'</div>';
+            var company_name = $(company_name_dom).text();
             link_list.push({'name':company_name,'url':company_link});
         }
         return link_list;
