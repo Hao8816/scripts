@@ -106,6 +106,11 @@ router.get('/details/', function(req, res, next) {
     var start_num = (page-1)*size;
     Model.File.find({'sha1': file_sha1}).run(function (err, files) {
         console.log('xxxxx',files);
+        if(err || files.length==0){
+            res.send({'info':'OK','result': {}});
+            return;
+        }
+
         var file = files[0];
         if (file.status == 0){
             var data = {
@@ -190,7 +195,8 @@ router.post('/check/', function(req, res, next) {
                     total         : 0,
                     current       : 0,
                     update_time   : dateTime.toString(),
-                    file_sha1     : file_sha1
+                    file_sha1     : file_sha1,
+                    status        : 0
                 };
                 task_list.push(task);
             }

@@ -1,12 +1,25 @@
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
+var Model = require('./models');
+var SHA1 = require('sha1');
+
 
 // 任务分配的接口
 router.get('/task/$', function(req, res, next) {
     // 处理一下
-    console.log(req.body);
-    res.send({'info':'OK','task':'xxxx'});
+    var base_url = 'https://www.tianyancha.com/search?key=';
+
+    Model.Task.find({'status':0}).limit(1).run(function(err,tasks){
+        if(err || tasks.length == 0){
+            console.log('初始化任务失败，暂无任务',err);
+            return;
+        }
+        var task_name = tasks[0].name;
+        var task_url = base_url+ encodeURIComponent(task_name);
+        //var task_url = base_url+task_name;
+        res.send({'url':task_url});
+    });
 });
 
 // 结果详情的接口

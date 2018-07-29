@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         任务结果列表
 // @namespace    http://tampermonkey.net/
-// @version      0.1.1
+// @version      0.1.2
 // @description  [外网版]［天眼查］ 公司列表
 // @author       Vaster
 // @match        https://www.tianyancha.com/search*
@@ -21,6 +21,14 @@
     if (current_page_array.length>1){
         current_page_num = parseInt(current_page_array[1]);
     }
+
+    function getParam (name) {
+        var re = new RegExp("[&,?]" + name + "=([^//&]*)", "i");
+        var a = re.exec(location_search);
+        if (a == null)
+            return "";
+        return unescape(a[1]);
+    }
     
     function getCompanyList(){
         // 获取列表
@@ -39,7 +47,7 @@
     var info_list = getCompanyList();
     console.log(info_list);
     
-    var monkey_url = 'http://127.0.0.1:8000/flow/api/v1/monkey/list/';
+    var monkey_url = 'http://127.0.0.1:8000/monkey/result/';
 
     var max_page_size = 1;
     var pager_items = $('.result-footer .pagination li').find('.num');
@@ -70,7 +78,7 @@
       method: "POST",
       url: monkey_url,
       headers: {'Content-Type': 'application/json'},
-      data : JSON.stringify({'result':info_list}),
+      data : JSON.stringify({'name': getParam('key'),'result':info_list}),
       onload: function(response) {
          //这里写处理函数
          console.log(response);
@@ -78,8 +86,8 @@
               console.log('数据爬取完毕');
               window.close();
           }else{
-              window.open(next_page_url);
-              window.close();
+              //window.open(next_page_url);
+              //window.close();
           }
       }
     });
