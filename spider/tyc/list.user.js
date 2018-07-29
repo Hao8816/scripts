@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         任务结果列表
 // @namespace    http://tampermonkey.net/
-// @version      0.1.3
+// @version      0.1.4
 // @description  [外网版]［天眼查］ 公司列表
 // @author       Vaster
 // @match        https://www.tianyancha.com/search*
@@ -56,7 +56,7 @@
         // 判断每个按钮上的东西
         var page_num_text = $(pager_items[i]).text();
         page_num_list = page_num_list.concat(page_num_text.split('...'));
-    };
+    }
     
     // 去掉非数字的部分
     page_num_list.forEach(function(item){
@@ -69,7 +69,7 @@
    
     // 自动翻页并解析当前的页面
     var next_page_num = current_page_num+1;
-
+    var task_info = {'name':decodeURIComponent(escape(getParam('key'))),'total': max_page_size,'current': current_page_num}
     var next_page_url = 'https://www.tianyancha.com/search/p'+next_page_num+location_search;
     console.log('下一个页面的url是',next_page_url);
      
@@ -78,7 +78,7 @@
       method: "POST",
       url: monkey_url,
       headers: {'Content-Type': 'application/json'},
-      data : JSON.stringify({'name': decodeURIComponent(escape(getParam('key'))),'result':info_list}),
+      data : JSON.stringify({'task': task_info,'result':info_list}),
       onload: function(response) {
          //这里写处理函数
          console.log(response);
@@ -86,8 +86,8 @@
               console.log('数据爬取完毕');
               window.close();
           }else{
-              //window.open(next_page_url);
-              //window.close();
+              window.open(next_page_url);
+              window.close();
           }
       }
     });

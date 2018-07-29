@@ -17,7 +17,6 @@ router.get('/task/$', function(req, res, next) {
         }
         var task_name = tasks[0].name;
         var task_url = base_url+ encodeURIComponent(task_name);
-        //var task_url = base_url+task_name;
         res.send({'url':task_url});
     });
 });
@@ -35,13 +34,40 @@ router.post('/result/$', function(req, res, next) {
     var data = req.body;
     var task_info = data['task'];
     var result_list = data['result'];
-
     // 查询任务的信息
+    Model.Task.find({'name':task_info['name']}).run(function(err,tasks){
+        // 判断查询结果
+        if (err || tasks.length==0){
+            return;
+        }
+        console.log('任务查询结果',tasks);
 
+        // 修改任务的状态和结果信息
+        var task = tasks[0];
+        task.status = 1;
+        task.total = task_info['total'];
+        task.current = task_info['current'];
+        task.save();
 
-    // 存储任务的结果
-
-
+        // 任务的结果
+        var task_result_list = [];
+        for (var i=0; i<result_list.length; i++){
+            var result = result_list[i];
+            var dateTime = new Date().getTime();
+            var dic = {};
+            dic['time'] = dateTime.toString();
+            dic['task_sha1'] = task.sha1;
+            dic['name'] = result['name'];
+            dic['url'] = result['url'];
+            dic['status'] = 0;
+            task_result_list.push(dic);
+        }
+        // 存储结果
+        Model.TaskResult.create(task_result_list,function(err,results){
+            console.log(err);
+            res.send({ info: 'OK'});
+        });
+    });
 
     ////现将json文件读出来
     //fs.readFile(json_fle_path, function(err,data){
@@ -68,8 +94,8 @@ router.post('/result/$', function(req, res, next) {
     //    })
     //});
 
-    console.log(req.body);
-    res.send({'info':'OK'})
+    //console.log(req.body);
+    //res.send({'info':'OK'})
 });
 
 
