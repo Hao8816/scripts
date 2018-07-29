@@ -4,7 +4,7 @@
 // @version      0.1.7
 // @description  获取任务脚本
 // @author       Vaster
-// @match        http*://*/*
+// @match        http*://www.baidu.com*/*
 // @exclude      https://www.tianyancha.com/company/*
 // @exclude      https://www.tianyancha.com/search*
 // @require      http://cdn.bootcss.com/jquery/1.11.2/jquery.js

@@ -4,6 +4,8 @@ var fs = require('fs');
 var Model = require('./models');
 var SHA1 = require('sha1');
 
+var Gearman = require('abraxas');
+var client = Gearman.Client.connect({ servers: ['127.0.0.1:4730'], defaultEncoding:'utf8'});
 
 // 任务分配的接口
 router.get('/task/$', function(req, res, next) {
@@ -42,6 +44,11 @@ router.post('/result/$', function(req, res, next) {
             return;
         }
         console.log('任务查询结果',tasks);
+
+        // 实时消息更新
+        client.submitJob('send_message', JSON.stringify(task_info)).then(function (result) {
+            console.log('发送更新消息',result);
+        });
 
         // 修改任务的状态和结果信息
         var task = tasks[0];

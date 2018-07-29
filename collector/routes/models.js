@@ -28,16 +28,18 @@ var File = db.define("file",{
 });
 
 
-// 文件信息表
+// 任务表
 var Task = db.define("task",{
     time          : String,    // 任务创建的时间
     sha1          : String,    // task的sha1
     name          : String,    // 文件名称
     total         : Number,    // 共多少条页记录
     current       : Number,    // 当前执行到多少个条记录
-    status        : Number,    // 爬取状态
+    status        : Number,    // [0 未启动， 1 已启动， 2 爬取完毕]
     update_time   : String,    // 最后更新时间
-    file_sha1     : String     // 所属文件的sha1
+    file_sha1     : String,    // 所属文件的sha1
+    priority      : Number     // 设置任务的优先级[9~0]
+
 },{
     // with in model method
 });
