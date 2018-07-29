@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         任务结果列表
 // @namespace    http://tampermonkey.net/
-// @version      0.1.4
+// @version      0.1.5
 // @description  [外网版]［天眼查］ 公司列表
 // @author       Vaster
 // @match        https://www.tianyancha.com/search*
@@ -86,8 +86,7 @@
               console.log('数据爬取完毕');
               window.close();
           }else{
-              window.open(next_page_url);
-              window.close();
+              window.location.href = next_page_url;
           }
       }
     });
