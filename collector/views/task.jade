@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  div(ng-controller='taskPageCtrl')
+    div
+      table(class='table')
+        tr
+          th(ng-repeat='header in result.headers') {{header}}
+        tr(ng-repeat='column in columns')
+          td(ng-repeat='header in result.headers')
+            table-data-cell-item(name='column[header]',header='{{header}}')
+      div
+        a(class='pager-btn {{page==details.page?"active":""}}' ng-repeat='page in pages',ng-href='/task/?key={{details.key}}&page={{page}}&size={{details.size}}') {{page}}
+        span 共计{{result.total}}条记录
+
+
+
+

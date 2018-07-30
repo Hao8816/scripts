@@ -137,6 +137,8 @@ router.get('/details/', function(req, res, next) {
                     dic['创建时间'] = task.time;
                     dic['最后更新时间'] = task.update_time;
                     dic['状态'] = task.status;
+                    dic['sha1'] = task.sha1;
+                    dic['name'] = task.name;
                     columns.push(dic);
                 }
 
@@ -214,6 +216,80 @@ router.post('/check/', function(req, res, next) {
     });
 });
 
+/* 修改任务信息 */
+router.post('/task/modify/', function(req, res, next) {
+    var data = req.body;
+    console.log('xxxxx',data);
+    var task_name = data['name'];
+    var task_priority = data['priority'];
+    var task_sha1 = data['task_sha1'];
+    Model.Task.find({'sha1': task_sha1}).run(function (err, tasks) {
+        console.log('xxxxx',tasks);
+        if(err || tasks.length==0){
+            res.send({'info':'OK','result': {}});
+            return;
+        }
+        var task = tasks[0];
+        // 修改文件的处理状态
+        task.priority = task_priority;
+        task.name = task_name;
+        task.save();
+    });
+});
+
+/* 任务详情 */
+router.get('/task/details/', function(req, res, next) {
+    var query = req.query;
+    var task_sha1 = query['key'];
+    var page = parseInt(query['page']) || 1;
+    var size = parseInt(query['size']) || 10;
+    var start_num = (page-1)*size;
+    Model.Task.find({'sha1': task_sha1}).run(function (err, tasks) {
+        console.log('xxxxx',tasks);
+        if(err || tasks.length==0){
+            res.send({'info':'OK','result': {}});
+            return;
+        }
+        var task = tasks[0];
+
+        // 修改文件的处理状态
+        Model.TaskResult.find({'task_sha1': task.sha1}).limit(size).offset(start_num).run(function(err, results){
+            var headers = ['子任务名称','创建时间','链接地址','其他信息','状态','最后更新时间'];
+            var columns = [];
+            for (var i=0;i<results.length;i++){
+                var dic = {};
+                var result = results[i];
+                dic['子任务名称'] = result.name;
+                dic['创建时间'] = result.time;
+                dic['链接地址'] = result.url;
+                dic['其他信息'] = result.info;
+                dic['最后更新时间'] = result.update_time;
+                dic['状态'] = result.status;
+                dic['sha1'] = result.sha1;
+                dic['name'] = result.name;
+                columns.push(dic);
+            }
+
+            // 统计数量
+            Model.TaskResult.count({'task_sha1': task.sha1}, function (err, total_counts) {
+                console.log("We have %d Does in our db", total_counts);
+                if (total_counts % size == 0){
+                    var max_page = total_counts/size;
+                }else{
+                    var max_page = parseInt(total_counts/size) + 1;
+                }
+                var result = {
+                    'headers': headers,
+                    'columns': columns,
+                    'max_page': max_page,
+                    'total': total_counts,
+                    'details': task
+                };
+                res.send({'info':'OK','result': result});
+            });
+        });
+    });
+});
 
 /* 文件下载 */
 router.post('/download/', function(req, res, next) {

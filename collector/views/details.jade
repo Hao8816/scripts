@@ -14,15 +14,13 @@ block content
         tr
           th(ng-repeat='header in result.headers') {{header}}
           th 操作
-        tr(ng-repeat='column in result.columns')
+        tr(ng-repeat='column in columns')
           td(ng-repeat='header in result.headers')
             table-data-cell-item(name='column[header]',header='{{header}}')
           td
-            a(href='https://www.tianyancha.com/search?key={{column["任务名称"]}}',target='_blank') 手动采集
-
+            a(href='/task/?key={{column.sha1}}') 修改任务
       div
         a(class='pager-btn {{page==details.page?"active":""}}' ng-repeat='page in pages',ng-href='/details/?key={{details.key}}&page={{page}}&size={{details.size}}') {{page}}
-
 
 
 

@@ -49,7 +49,7 @@ app.controller('uploadPageCtrl', function uploadPageCtrl($scope, $http,  Upload)
     $scope.getFileList(1);
 });
 
-app.controller('detailsPageCtrl', function detailsPageCtrl($scope, $http, $window, Pager, socket){
+app.controller('detailsPageCtrl', function detailsPageCtrl($scope, $http, $window, Pager, socket, $timeout){
 
     var task_hash = {};
     // 接受socket的更新消息
@@ -58,8 +58,11 @@ app.controller('detailsPageCtrl', function detailsPageCtrl($scope, $http, $windo
         var task_name = res['name'];
         if (task_hash.hasOwnProperty(task_name)){
             var task_index = task_hash[task_name];
-            $scope.result.columns[task_index]['总页数'] = res['total'];
-            $scope.result.columns[task_index]['当前页数'] = res['current'];
+            var column = $scope.columns[task_index];
+            column['总页数'] = res['total'];
+            column['已完成'] = res['current'];
+            column['最后更新时间'] = res['update_time'];
+            $scope.columns[task_index] = column;
         }
     });
 
@@ -86,9 +89,12 @@ app.controller('detailsPageCtrl', function detailsPageCtrl($scope, $http, $windo
         var data = res['data'];
         $scope.result = data['result'];
 
-        $scope.result['columns'].forEach(function(item,index){
+        var columns = $scope.result.columns;
+
+        columns.forEach(function(item,index){
             task_hash[item['任务名称']] = index;
         });
+        $scope.columns = columns;
 
         // 构造翻页信息
         Pager.pages(page,data['result']['max_page'],function(pages){
@@ -112,6 +118,42 @@ app.controller('detailsPageCtrl', function detailsPageCtrl($scope, $http, $windo
             location.href = '/details/?key='+key+'&page='+page+'&size='+size;
         });
     }
+});
+
+
+app.controller('taskPageCtrl', function detailsPageCtrl($scope, $http, $window, Pager, socket, $timeout){
+
+    // 网页查询参数
+    var query_params = $window.location.search;
+    $scope.getParam = function (name) {
+        var re = new RegExp("[&,?]" + name + "=([^//&]*)", "i");
+        var a = re.exec(query_params);
+        if (a == null)
+            return "";
+        return unescape(a[1]);
+    };
+
+    // 参数解析
+    var key = $scope.getParam('key');
+    var page = $scope.getParam('page') || 1;
+    var size = $scope.getParam('size') || 10;
+    $scope.details = {'key': key, 'page': page,'size': size};
+
+    // 获取文件列表
+    var url = API_URL+'/files/task/details/?key='+key+'&page='+page+'&size='+size;
+    $http.get(url).then(function(res){
+        var data = res['data'];
+        $scope.result = data['result'];
+        var columns = $scope.result.columns;
+        $scope.columns = columns;
+
+        // 构造翻页信息
+        Pager.pages(page,data['result']['max_page'],function(pages){
+            $scope.pages = pages;
+        });
+
+        console.log('文件列表结果',data);
+    });
 });
 
 app.service( 'Pager', [function() {

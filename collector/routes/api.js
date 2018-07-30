@@ -10,24 +10,54 @@ var client = Gearman.Client.connect({ servers: ['127.0.0.1:4730'], defaultEncodi
 // 任务分配的接口
 router.get('/task/$', function(req, res, next) {
     // 处理一下
-    var base_url = 'https://www.tianyancha.com/search?key=';
-
-    Model.Task.find({'status':0}).limit(1).run(function(err,tasks){
-        if(err || tasks.length == 0){
-            console.log('初始化任务失败，暂无任务',err);
-            return;
-        }
-        var task_name = tasks[0].name;
-        var task_url = base_url+ encodeURIComponent(task_name);
-        res.send({'url':task_url});
-    });
+    var query = req.query;
+    var type = query['key'];
+    if (type == 'task'){
+        var base_url = 'https://www.tianyancha.com/search?key=';
+        Model.Task.find({'status':0}).limit(1).run(function(err,tasks){
+            if(err || tasks.length == 0){
+                console.log('初始化任务失败，暂无任务',err);
+                return;
+            }
+            var task_name = tasks[0].name;
+            var task_url = base_url+ encodeURIComponent(task_name);
+            res.send({'url':task_url});
+        });
+    }else if(type == 'result'){
+        Model.TaskResult.find({'status':0}).limit(1).run(function(err,tasks){
+            if(err || tasks.length == 0){
+                console.log('初始化任务失败，暂无任务',err);
+                return;
+            }
+            var task = tasks[0].name;
+            res.send({'url':task.url});
+        });
+    }
 });
 
 // 结果详情的接口
 router.post('/details/$', function(req, res, next) {
     // 处理一下
     console.log(req.body);
-    res.send({'info':'OK'});
+    var data = req.body;
+    var task_name = data['task'];
+    var info = data['result'];
+    console.log('任务信息',task_name);
+
+    Model.TaskResult.find({'name':task_name}).run(function(err,results){
+        // 判断查询结果
+        if (err || results.length==0){
+            return;
+        }
+        console.log('任务查询结果',results);
+        var dateTime = new Date().getTime();
+        var result = results[0];
+        result.update_time = dateTime.toString();
+        result.status = 1;
+        result.info = info;
+        result.save()
+        res.send({'info':'OK'});
+    });
 });
 
 // 任务结果
@@ -43,6 +73,9 @@ router.post('/result/$', function(req, res, next) {
         if (err || tasks.length==0){
             return;
         }
+        var dateTime = new Date().getTime();
+        task_info['update_time'] = dateTime.toString();
+
         console.log('任务查询结果',tasks);
 
         // 实时消息更新
@@ -55,13 +88,13 @@ router.post('/result/$', function(req, res, next) {
         task.status = 1;
         task.total = task_info['total'];
         task.current = task_info['current'];
+        task.update_time = task_info['update_time'];
         task.save();
 
         // 任务的结果
         var task_result_list = [];
         for (var i=0; i<result_list.length; i++){
             var result = result_list[i];
-            var dateTime = new Date().getTime();
             var dic = {};
             dic['time'] = dateTime.toString();
             dic['task_sha1'] = task.sha1;
@@ -76,34 +109,6 @@ router.post('/result/$', function(req, res, next) {
             res.send({ info: 'OK'});
         });
     });
-
-    ////现将json文件读出来
-    //fs.readFile(json_fle_path, function(err,data){
-    //    if(err){
-    //        var item_hash = {};
-    //    }else{
-    //        var items = data.toString();
-    //        item_hash = JSON.parse(items);
-    //    }
-    //    // 循环信息
-    //    for (var i=0;i<company_list.length;i++){
-    //        var name = company_list[i]['name'];
-    //        var url = company_list[i]['url'];
-    //        item_hash[name] = url;
-    //    }
-    //    var total_count = Object.keys(item_hash).length;
-    //    console.log('一共存入条数为：',total_count);
-    //    var str = JSON.stringify(item_hash);
-    //    fs.writeFile(json_fle_path,str,function(err){
-    //        if(err){
-    //            console.error(err);
-    //        }
-    //        console.log('新增成功');
-    //    })
-    //});
-
-    //console.log(req.body);
-    //res.send({'info':'OK'})
 });
 
 
