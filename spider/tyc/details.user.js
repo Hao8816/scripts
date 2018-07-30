@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         任务结果详情
 // @namespace    https://github.com/Hao8816/scripts/
-// @version      0.1.3
+// @version      0.1.4
 // @description  [外网版]［天眼查］ 获取公司详情
 // @author       Vaster
 // @match        https://www.tianyancha.com/company/*
@@ -43,6 +43,8 @@
     
     var company_address = '';
     var company_status = '';
+    var company_time = '';
+    var company_capital = '';
     var company_id = '';
     var organization_id = '';
     var tax_id = '';
@@ -76,6 +78,7 @@
     // 解析公司的详细信息
     for(var i=0; i<lines.length; i++){
         var text = $(lines[i]).text();
+        console.log(text);
         
         // 抽取公司或者机构的地址信息
         if (text.indexOf('附近公司')>=0){
@@ -85,8 +88,20 @@
         }
             
         // 抽取公司经营状态
-        if (text.indexOf('公司状态')>0){
+        if (text.indexOf('公司状态')>=0){
             company_status = text.split('公司状态')[1];
+        }
+
+        // 抽取公司经营状态
+        if (text.indexOf('营业期限')>=0){
+            // 单独处理
+            company_status = text.split('营业期限')[1];
+        }
+
+        // 抽取公司经营状态
+        if (text.indexOf('注册资本')>=0){
+            var html = $(lines[i]).html();
+            company_capital = $(html).find('div[title$="人民币"]').attr('title');
         }
         
         // 抽取工商注册号
@@ -144,6 +159,8 @@
         'company_email': company_email,
         'company_website': company_website,
         'company_status': company_status,
+        'company_time': company_time,
+        'company_capital': company_capital,
         'company_address': company_address,
         'company_id': company_id,
         'organization_id': organization_id,
@@ -162,7 +179,7 @@
       onload: function(response) {
          //这里写处理函数
          console.log(response);
-         window.location.href = 'https://www.baidu.com';
+         //window.location.href = 'https://www.baidu.com';
       }
     });
 })();
