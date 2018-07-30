@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         任务结果列表
 // @namespace    http://tampermonkey.net/
-// @version      0.2.7
+// @version      0.2.8
 // @description  [外网版]［天眼查］ 公司列表
 // @author       Vaster
 // @match        https://www.tianyancha.com/search*
@@ -102,7 +102,7 @@
          console.log(response);
           if (next_page_num>max_page_size){
               console.log('数据爬取完毕');
-              if(max_page_size==0 && !empty_result){
+              if(!empty_result){
                   // 系统处理问题，可能需要登陆处理哦
                   console.log('请检查页面信息');
               }else{
