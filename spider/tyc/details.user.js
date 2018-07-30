@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         任务结果详情
 // @namespace    https://github.com/Hao8816/scripts/
-// @version      0.1.1
+// @version      0.1.2
 // @description  [外网版]［天眼查］ 获取公司详情
 // @author       Vaster
 // @match        https://www.tianyancha.com/company/*
@@ -23,6 +23,14 @@
         }
     	return true;
     };
+
+    var doc = document.getElementsByTagName('html')[0].innerHTML;
+    // 检查字符串是不是503请求
+    if (doc.indexOf('503 Service Temporarily Unavailable')>0){
+        // 刷新当前页面
+        window.location.reload();
+        return;
+    }
 
     var monkey_url = 'http://127.0.0.1:8000/monkey/details/';
     
@@ -64,8 +72,7 @@
             company_website = company_website.replace('添加','');
         }
     }
-    
-    
+
     // 解析公司的详细信息
     for(var i=0; i<lines.length; i++){
         var text = $(lines[i]).text();
@@ -116,7 +123,6 @@
         if (text.startWith('经营范围')){
         	bussiness_scope = $(lines[i+1]).text();
         }
-              
     }
     
     console.log('电话:',company_phone);
@@ -131,15 +137,31 @@
     console.log('登记机关:',government_name);
     console.log('公司类型:',company_type);
     console.log('经营范围:',bussiness_scope);
+
+    var result = {
+        'company_phone': company_phone,
+        'company_email': company_email,
+        'company_website': company_website,
+        'company_status': company_status,
+        'company_address': company_address,
+        'company_id': company_id,
+        'organization_id': organization_id,
+        'tax_id': tax_id,
+        'credit_id': credit_id,
+        'government_name': government_name,
+        'company_type': company_type,
+        'bussiness_scope': bussiness_scope
+    };
     
     GM_xmlhttpRequest({
       method: "POST",
       url: monkey_url,
-      data : JSON.stringify({'name':company_name,'address':company_address}),
+      headers: {'Content-Type': 'application/json'},
+      data : JSON.stringify({'result':result}),
       onload: function(response) {
          //这里写处理函数
          console.log(response);
-         window.close();
+         window.location.href = 'https://www.baidu.com';
       }
     });
 })();
