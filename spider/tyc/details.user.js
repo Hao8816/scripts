@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         任务结果详情
 // @namespace    https://github.com/Hao8816/scripts/
-// @version      0.1.5
+// @version      0.1.6
 // @description  [外网版]［天眼查］ 获取公司详情
 // @author       Vaster
 // @match        https://www.tianyancha.com/company/*
@@ -186,7 +186,7 @@
       method: "POST",
       url: monkey_url,
       headers: {'Content-Type': 'application/json'},
-      data : JSON.stringify({'result':result}),
+      data : JSON.stringify({'task': company_name, 'result': result}),
       onload: function(response) {
          //这里写处理函数
          console.log(response);
