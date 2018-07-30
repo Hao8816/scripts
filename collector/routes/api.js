@@ -8,10 +8,10 @@ var Gearman = require('abraxas');
 var client = Gearman.Client.connect({ servers: ['127.0.0.1:4730'], defaultEncoding:'utf8'});
 
 // 任务分配的接口
-router.get('/task/$', function(req, res, next) {
+router.get('/task/', function(req, res, next) {
     // 处理一下
     var query = req.query;
-    var type = query['key'];
+    var type = query['type'];
     if (type == 'task'){
         var base_url = 'https://www.tianyancha.com/search?key=';
         Model.Task.find({'status':0}).limit(1).run(function(err,tasks){
@@ -29,7 +29,8 @@ router.get('/task/$', function(req, res, next) {
                 console.log('初始化任务失败，暂无任务',err);
                 return;
             }
-            var task = tasks[0].name;
+            var task = tasks[0];
+            console.log('任务的URL是：',task);
             res.send({'url':task.url});
         });
     }

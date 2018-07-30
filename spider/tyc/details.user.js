@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         任务结果详情
 // @namespace    https://github.com/Hao8816/scripts/
-// @version      0.1.7
+// @version      0.1.8
 // @description  [外网版]［天眼查］ 获取公司详情
 // @author       Vaster
 // @match        https://www.tianyancha.com/company/*
@@ -106,7 +106,7 @@
         if (text.indexOf('注册资本')>=0){
             var html = $(lines[i]).html();
             var dom_html = '<div>'+html+'</div>';
-            company_capital = $(dom_html).find('div[title$="人民币"]').attr('title');
+            company_capital = $(dom_html).find('div[title$="人民币"]').attr('title') || '';
         }
         
         // 抽取工商注册号
