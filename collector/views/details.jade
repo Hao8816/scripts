@@ -3,7 +3,9 @@ extends layout
 block content
   div(ng-controller='detailsPageCtrl')
     div
-      h3= title
+      div(class='page-title-wrapper')
+        span(class='page-title') 批量任务/{{result.details.name}}
+
       div(ng-show='result.details.status==0') 请选择名称
         select(class='form-control input-sm select-item',ng-model='column_name')
           option(ng-repeat='header in result.headers',value='{{header}}') {{header}}

@@ -3,6 +3,25 @@ var app = angular.module('collector',['ngFileUpload']).run(function(){
 
 });
 
+var FIELD_HASH = {
+    'company_name':'公司全称',
+    'company_phone':'公司电话',
+    'company_email':'公司邮箱',
+    'company_website':'公司网站',
+    'company_status':'经营状态',
+    'company_capital':'注册资本',
+    'company_size':'人员规模',
+    'company_time':'注册时间',
+    'company_address':'公司地址',
+    'company_id':'工商注册号',
+    'organization_id':'组织机构代码',
+    'tax_id':'纳税人识别号',
+    'credit_id':'统一信用代码',
+    'government_name':'登记机关',
+    'company_type':'公司类型',
+    'bussiness_scope':'经营范围'
+};
+
 var API_URL = 'http://127.0.0.1:8000';
 // 文件上传
 app.controller('uploadPageCtrl', function uploadPageCtrl($scope, $http,  Upload){
@@ -50,7 +69,6 @@ app.controller('uploadPageCtrl', function uploadPageCtrl($scope, $http,  Upload)
 });
 
 app.controller('detailsPageCtrl', function detailsPageCtrl($scope, $http, $window, Pager, socket, $timeout){
-
     var task_hash = {};
     // 接受socket的更新消息
     socket.on('task_update',function(res){
@@ -132,6 +150,8 @@ app.controller('taskPageCtrl', function detailsPageCtrl($scope, $http, $window, 
             return "";
         return unescape(a[1]);
     };
+
+    $scope.FIELD_HASH = FIELD_HASH;
 
     // 参数解析
     var key = $scope.getParam('key');

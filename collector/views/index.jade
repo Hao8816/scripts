@@ -2,23 +2,24 @@ extends layout
 
 block content
   div(ng-controller='uploadPageCtrl')
-    h3= title
-    button(class='btn btn-sm btn-primary',ngf-select="uploadFiles($files)" multiple="multiple") 上传文件
+    div(class='page-title-wrapper')
+      span(class='page-title') 批量任务
+      button(class='btn btn-sm btn-outline-info',style='float:right;margin: -5px 0px',ngf-select="uploadFiles($files)" multiple="multiple") 上传文件
     div(class='file-list')
       table(class='table')
         tr
-          th 名称
-          th 大小
+          th 文件名称
+          th 文件大小
           th 上传时间
-          th 类型
+          th 任务总数
           th 状态
           th 操作
 
         tr(ng-repeat='file in files')
           td {{file.name}}
           td {{file.size}}
-          td {{file.time}}
-          td {{file.type}}
+          td {{file.time|date:'yyyy-MM-dd HH:MM:ss'}}
+          td {{file.total||'-'}}
           td {{file.status}}
           td
             a(class='details-btn',href='/details/?key={{file.sha1}}') 详情

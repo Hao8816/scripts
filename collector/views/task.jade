@@ -2,13 +2,18 @@ extends layout
 
 block content
   div(ng-controller='taskPageCtrl')
+    div(class='page-title-wrapper')
+      span(class='page-title') 批量任务/{{result.details.name}}
     div
-      table(class='table')
-        tr
-          th(ng-repeat='header in result.headers') {{header}}
-        tr(ng-repeat='column in columns')
-          td(ng-repeat='header in result.headers')
-            table-data-cell-item(name='column[header]',header='{{header}}')
+      div(class='result-item',ng-repeat='result in result.results')
+        div(class='')
+          a(href='{{result.url}}') {{result.name}}
+          span 最后更新时间 {{result.update_time|date:'yyyy-MM-dd HH:MM:ss'}}
+          span 任务状态 {{result.status?'已爬取':'未爬取'}}
+        div
+          div 网址链接： {{result.url}}
+          div(ng-repeat='(key,info) in result.info') {{FIELD_HASH[key]}}:{{info}}
+
       div
         a(class='pager-btn {{page==details.page?"active":""}}' ng-repeat='page in pages',ng-href='/task/?key={{details.key}}&page={{page}}&size={{details.size}}') {{page}}
         span 共计{{result.total}}条记录

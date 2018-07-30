@@ -30,7 +30,6 @@ router.get('/task/', function(req, res, next) {
                 return;
             }
             var task = tasks[0];
-            console.log('任务的URL是：',task);
             res.send({'url':task.url});
         });
     }
@@ -50,13 +49,14 @@ router.post('/details/$', function(req, res, next) {
         if (err || results.length==0){
             return;
         }
-        console.log('任务查询结果',results);
         var dateTime = new Date().getTime();
-        var result = results[0];
-        result.update_time = dateTime.toString();
-        result.status = 1;
-        result.info = info;
-        result.save()
+        for(var i=0;i<results.length;i++){
+            var result = results[i];
+            result.update_time = dateTime.toString();
+            result.status = 1;
+            result.info = info;
+            result.save()
+        }
         res.send({'info':'OK'});
     });
 });
@@ -76,8 +76,6 @@ router.post('/result/$', function(req, res, next) {
         }
         var dateTime = new Date().getTime();
         task_info['update_time'] = dateTime.toString();
-
-        console.log('任务查询结果',tasks);
 
         // 实时消息更新
         client.submitJob('send_message', JSON.stringify(task_info)).then(function (result) {

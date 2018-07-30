@@ -1,5 +1,5 @@
 body {
-  padding: 10px;
+  padding: 0px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -7,10 +7,6 @@ a {
   color: #00B7FF;
 }
 
-
-.file-list{
-  padding: 10px;
-}
 .select-item{
   width: 180px!important;
   display: inline-block!important;
@@ -34,7 +30,47 @@ a {
     color: #333;
 }
 .pager-btn.active{
-    background-color: #337ab7;
+    background-color: #00CCCC;
     color: #fff;
-    border: 1px solid #337ab7;
+    border: 1px solid #00CCCC;
+}
+.nav-item.active{
+    position: relative;
+}
+.nav-item.active::before{
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 2px;
+    bottom: 0px;
+    left: 0px;
+    background-color: #fff;
+}
+.table{
+    border-collapse: collapse;
+    border-bottom: 1px solid #ddd;
+}
+.table tr th{
+    background-color: #f8f8f8;
+    color: #222!important;
+    font-size: 14px;
+}
+.table tr td,
+.table tr th{
+    font-size: 13px;
+    font-weight: normal;
+    color: #444;
+}
+.page-title-wrapper{
+    padding: 15px 0px;
+}
+.page-title{
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
+.result-item{
+    padding: 10px 0px;
+    border-top: 1px solid #ddd;
+    font-size: 14px;
 }

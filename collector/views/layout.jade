@@ -11,4 +11,24 @@ html(ng-app='collector')
     script(type='text/javascript',src='/socket/socket.io.min.js')
 
   body
-    block content
+    nav(class='navbar navbar-expand-lg fixed-top navbar-dark',style='background-color:#00CCCC;')
+      a(class='navbar-brand',href='#')
+        img(src='/images/logo.png',height=30, style='float:left')
+        span(style='padding-top:2px;margin-left:10px;margin-right:15px ') 采集器
+      button(class='navbar-toggler',type='button',data-toggle='collapse',data-target='#navbarSupportedContent',aria-controls='navbarSupportedContent',aria-expanded='false',aria-label='Toggle navigation')
+        span(class='navbar-toggler-icon')
+
+      div(class='collapse navbar-collapse',id='navbarSupportedContent')
+        ul(class='navbar-nav mr-auto')
+          li(class='nav-item active')
+            a(class='nav-link',href='/') 数据采集
+              span(class='sr-only') (current)
+
+        form(class='form-inline')
+          input(class='form-control form-control-sm',style='margin-right:15px;width: 280px',type='search',placeholder='搜索关键词',aria-label='Search')
+          //button(class='btn btn-default btn-sm',type='submit') 查询
+
+    div(class='container-fluid',style='padding:80px 30px')
+      block content
+
+

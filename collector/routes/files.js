@@ -256,20 +256,6 @@ router.get('/task/details/', function(req, res, next) {
         Model.TaskResult.find({'task_sha1': task.sha1}).limit(size).offset(start_num).run(function(err, results){
             var headers = ['子任务名称','创建时间','链接地址','其他信息','状态','最后更新时间'];
             var columns = [];
-            for (var i=0;i<results.length;i++){
-                var dic = {};
-                var result = results[i];
-                dic['子任务名称'] = result.name;
-                dic['创建时间'] = result.time;
-                dic['链接地址'] = result.url;
-                dic['其他信息'] = result.info;
-                dic['最后更新时间'] = result.update_time;
-                dic['状态'] = result.status;
-                dic['sha1'] = result.sha1;
-                dic['name'] = result.name;
-                columns.push(dic);
-            }
-
             // 统计数量
             Model.TaskResult.count({'task_sha1': task.sha1}, function (err, total_counts) {
                 console.log("We have %d Does in our db", total_counts);
@@ -279,8 +265,7 @@ router.get('/task/details/', function(req, res, next) {
                     var max_page = parseInt(total_counts/size) + 1;
                 }
                 var result = {
-                    'headers': headers,
-                    'columns': columns,
+                    'results': results,
                     'max_page': max_page,
                     'total': total_counts,
                     'details': task
