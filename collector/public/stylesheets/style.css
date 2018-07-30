@@ -74,3 +74,11 @@ a {
     border-top: 1px solid #ddd;
     font-size: 14px;
 }
+.result-item .result-update-time{
+    padding: 0px 20px;
+    font-size: 13px;color: #999;
+}
+.result-item .result-status{
+    font-size: 13px;
+    color: #333;
+}
