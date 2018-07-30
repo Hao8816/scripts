@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         任务结果详情
 // @namespace    https://github.com/Hao8816/scripts/
-// @version      0.1.4
+// @version      0.1.5
 // @description  [外网版]［天眼查］ 获取公司详情
 // @author       Vaster
 // @match        https://www.tianyancha.com/company/*
@@ -45,6 +45,7 @@
     var company_status = '';
     var company_time = '';
     var company_capital = '';
+    var company_size = '';
     var company_id = '';
     var organization_id = '';
     var tax_id = '';
@@ -95,18 +96,24 @@
         // 抽取公司经营状态
         if (text.indexOf('营业期限')>=0){
             // 单独处理
-            company_status = text.split('营业期限')[1];
+            company_time =  $(lines[i+1]).text();
         }
 
         // 抽取公司经营状态
         if (text.indexOf('注册资本')>=0){
             var html = $(lines[i]).html();
-            company_capital = $(html).find('div[title$="人民币"]').attr('title');
+            var dom_html = '<div>'+html+'</div>';
+            company_capital = $(dom_html).find('div[title$="人民币"]').attr('title');
         }
         
         // 抽取工商注册号
         if (text.indexOf('工商注册号')>=0){
         	company_id = $(lines[i+1]).text();
+        }
+
+        // 人员规模
+        if (text.indexOf('人员规模')>=0){
+            company_size = $(lines[i+1]).text();
         }
         
         // 抽取组织机构代码
@@ -144,6 +151,9 @@
     console.log('邮箱:',company_email);
     console.log('网址:',company_website);
     console.log('公司状态:',company_status);
+    console.log('注册资本:',company_capital);
+    console.log('人员规模:',company_size);
+    console.log('注册时间:',company_time);
     console.log('公司地址:',company_address);
     console.log('工商注册号:',company_id);
     console.log('组织机构代码:',organization_id);
@@ -161,6 +171,7 @@
         'company_status': company_status,
         'company_time': company_time,
         'company_capital': company_capital,
+        'company_size': company_size,
         'company_address': company_address,
         'company_id': company_id,
         'organization_id': organization_id,
