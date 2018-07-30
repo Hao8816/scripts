@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         爬虫启动
 // @namespace    http://tampermonkey.net/
-// @version      0.1.7
+// @version      0.1.8
 // @description  获取任务脚本
 // @author       Vaster
 // @match        http*://www.baidu.com*/*
@@ -20,7 +20,23 @@
     // 发送请求
     GM_xmlhttpRequest({
         method: "GET",
-        url: task_url,
+        url: task_url+'?type=task',
+        headers: {'Content-Type': 'application/json'},
+        responseType: 'json',
+        onload: function(res) {
+            // 解析返回信息
+            console.log(res);
+            var task = res.response;
+            var task_url = task['url'];
+            console.log('需要爬取的url',task_url);
+            window.location.href = task_url;
+        }
+    });
+
+    // 发送请求
+    GM_xmlhttpRequest({
+        method: "GET",
+        url: task_url+'?type=result',
         headers: {'Content-Type': 'application/json'},
         responseType: 'json',
         onload: function(res) {

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         任务结果详情
 // @namespace    https://github.com/Hao8816/scripts/
-// @version      0.1.6
+// @version      0.1.7
 // @description  [外网版]［天眼查］ 获取公司详情
 // @author       Vaster
 // @match        https://www.tianyancha.com/company/*
@@ -63,16 +63,19 @@
         if (info.startWith('电话：')){
         	company_phone = info.split('编辑')[0].replace('电话：','');
             company_phone = company_phone.replace('添加','');
+            company_phone = company_phone.replace('查看更多','');
         }
         
         if (info.startWith('邮箱：')){
         	company_email = info.split('编辑')[0].replace('邮箱：','');
             company_email = company_email.replace('添加','');
+            company_email = company_email.replace('查看更多','');
         }
         
         if (info.startWith('网址：')){
         	company_website = info.split('编辑')[0].replace('网址：','');
             company_website = company_website.replace('添加','');
+            company_website = company_website.replace('查看更多','');
         }
     }
 
@@ -190,7 +193,7 @@
       onload: function(response) {
          //这里写处理函数
          console.log(response);
-         //window.location.href = 'https://www.baidu.com';
+         window.location.href = 'https://www.baidu.com';
       }
     });
 })();
