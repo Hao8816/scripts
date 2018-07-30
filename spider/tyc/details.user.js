@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         任务结果详情
 // @namespace    https://github.com/Hao8816/scripts/
-// @version      0.1.2
+// @version      0.1.3
 // @description  [外网版]［天眼查］ 获取公司详情
 // @author       Vaster
 // @match        https://www.tianyancha.com/company/*
@@ -39,7 +39,7 @@
     
     // 循环公司的
     var lines = $('#_container_baseInfo>table').find('tr').find('td');
-    var company_infos = $('.company_header_interior').find('div>div');
+    var company_infos = $('.company-header-block').find('.detail .in-block');
     
     var company_address = '';
     var company_status = '';
@@ -139,6 +139,7 @@
     console.log('经营范围:',bussiness_scope);
 
     var result = {
+        'company_name': company_name,
         'company_phone': company_phone,
         'company_email': company_email,
         'company_website': company_website,
