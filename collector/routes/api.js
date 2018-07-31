@@ -110,5 +110,19 @@ router.post('/result/$', function(req, res, next) {
     });
 });
 
+// 任务结果
+router.get('/options/', function(req, res, next) {
+    // 处理一下
+    var query = req.query;
+    var name = query['name'];
+
+    // 实时消息更新
+    client.submitJob('suggest', JSON.stringify({'query':name})).then(function (result) {
+        console.log('发送更新消息',result);
+        var result = JSON.parse(result);
+        var options = result['options'];
+        res.send({ info: 'OK','options':options});
+    });
+});
 
 module.exports = router;

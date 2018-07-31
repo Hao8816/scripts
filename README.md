@@ -21,3 +21,6 @@ https://tampermonkey.net/
 
 ### 结果展示
     查看 /collected/data/result.json 文件
+    
+### ES自动补全
+https://www.jianshu.com/p/d2a3febb2dc8

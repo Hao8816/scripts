@@ -1,5 +1,5 @@
 // 文件上传的情况
-var app = angular.module('collector',['ngFileUpload']).run(function(){
+var app = angular.module('collector',['ngFileUpload','angucomplete']).run(function(){
 
 });
 

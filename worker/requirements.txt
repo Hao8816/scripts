@@ -1,2 +1,6 @@
+#导出系统所有的pip依赖  pip freeze > requirements.txt
+#系统所有的依赖 (sudo) pip install -r requirements.txt
 gearman==2.0.2
 pandas==0.23.0
+gensim==3.5.0
+elasticsearch==5.4.0

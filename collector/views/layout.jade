@@ -3,12 +3,15 @@ html(ng-app='collector')
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/angular-autocomplete.css')
     link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
     script(type='text/javascript',src='/angularjs/angular.min.js')
     script(type='text/javascript',src='/angularjs/angular-upload.min.js')
+    script(type='text/javascript',src='/angularjs/angular-autocomplete.js')
     script(type='text/javascript',src='/js/collector.js')
     script(type='text/javascript',src='/js/directives/table-data-cell.js')
     script(type='text/javascript',src='/socket/socket.io.min.js')
+
 
   body
     nav(class='navbar navbar-expand-lg fixed-top navbar-dark',style='background-color:#00CCCC;')
@@ -25,8 +28,7 @@ html(ng-app='collector')
               span(class='sr-only') (current)
 
         form(class='form-inline')
-          input(class='form-control form-control-sm',style='margin-right:15px;width: 280px',type='search',placeholder='搜索关键词',aria-label='Search')
-          //button(class='btn btn-default btn-sm',type='submit') 查询
+          angucomplete(id='search',placeholder='搜索公司名称',pause='400',selectedobject='query',url="http://127.0.0.1:8000/monkey/options?name=",datafield='options',titlefield='name',minlength='2',inputclass='form-control form-control-sm',style='width:300px!important')
 
     div(class='container-fluid',style='padding:80px 30px')
       block content
