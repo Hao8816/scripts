@@ -1,0 +1,22 @@
+处理excel文件
+处理完成
+Traceback (most recent call last):
+  File "gearman_worker_save_file.py", line 62, in <module>
+    gearman_worker.work()
+  File "/Users/chenhao/miniconda2/lib/python2.7/site-packages/gearman/worker.py", line 83, in work
+处理csv文件
+处理完成
+处理csv文件
+处理完成
+Traceback (most recent call last):
+  File "gearman_worker_read_file.py", line 72, in <module>
+    gearman_worker.work()
+  File "/Users/chenhao/miniconda2/lib/python2.7/site-packages/gearman/worker.py", line 83, in work
+        continue_working = self.poll_connections_until_stopped(worker_connections, continue_while_connections_alive, timeout=poll_timeout)
+continue_working = self.poll_connections_until_stopped(worker_connections, continue_while_connections_alive, timeout=poll_timeout)
+  File "/Users/chenhao/miniconda2/lib/python2.7/site-packages/gearman/connection_manager.py", line 203, in poll_connections_until_stopped
+  File "/Users/chenhao/miniconda2/lib/python2.7/site-packages/gearman/connection_manager.py", line 203, in poll_connections_until_stopped
+        raise ServerUnavailable('Found no valid connections in list: %r' % self.connection_list)
+raise ServerUnavailable('Found no valid connections in list: %r' % self.connection_list)
+gearman.errorsgearman.errors..ServerUnavailableServerUnavailable: : Found no valid connections in list: [<GearmanConnection 127.0.0.1:4730 connected=False>]Found no valid connections in list: [<GearmanConnection 127.0.0.1:4730 connected=False>]
+
