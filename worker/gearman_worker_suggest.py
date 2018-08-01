@@ -28,7 +28,7 @@ def suggest_listener(gearman_worker, gearman_job):
                 "completion" : {
                     "field" : "suggest",
                     "fuzzy" : {
-                        "fuzziness" : 2
+                        "fuzziness" : 1
                     }
                 }
             }

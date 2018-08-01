@@ -30,9 +30,9 @@ a {
     color: #333;
 }
 .pager-btn.active{
-    background-color: #00CCCC;
+    background-color: #3399CC;
     color: #fff;
-    border: 1px solid #00CCCC;
+    border: 1px solid #3399CC;
 }
 .nav-item.active{
     position: relative;

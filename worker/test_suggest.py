@@ -82,7 +82,7 @@ def index_task(docs) :
 
 # 建立连接
 es = Elasticsearch([{'host': ES_HOST, 'port': ES_PORT }])
-#res = es.indices.create(index='tasks', ignore=400, body=task_mapping)
+res = es.indices.create(index='tasks', ignore=400, body=task_mapping)
 
 index_docs = []
 # 索引文档
@@ -113,14 +113,14 @@ dsl = {
     }
 }
 
-res = es.search(index="tasks", doc_type='details', body=dsl)
-options = res['suggest']['task-suggest']
-for option in options:
-    text_query = option['text']
-    text_options = option['options']
-    print text_query
-    for text_option in text_options:
-        print text_option['_source']['name']
+#res = es.search(index="tasks", doc_type='details', body=dsl)
+#options = res['suggest']['task-suggest']
+#for option in options:
+#    text_query = option['text']
+#    text_options = option['options']
+#    print text_query
+#    for text_option in text_options:
+#        print text_option['_source']['name']
 
 
 

@@ -14,7 +14,7 @@ html(ng-app='collector')
 
 
   body
-    nav(class='navbar navbar-expand-lg fixed-top navbar-dark',style='background-color:#00CCCC;')
+    nav(class='navbar navbar-expand-lg fixed-top navbar-dark',style='background-color:#3399CC;')
       a(class='navbar-brand',href='#')
         img(src='/images/logo.png',height=30, style='float:left')
         span(style='padding-top:2px;margin-left:10px;margin-right:15px ') 采集器
@@ -28,7 +28,7 @@ html(ng-app='collector')
               span(class='sr-only') (current)
 
         form(class='form-inline')
-          angucomplete(id='search',placeholder='搜索公司名称',pause='400',selectedobject='query',url="http://127.0.0.1:8000/monkey/options?name=",datafield='options',titlefield='name',minlength='2',inputclass='form-control form-control-sm',style='width:300px!important')
+          angucomplete(id='search',placeholder='搜索公司名称',pause='400',selectedobject='query',url="http://127.0.0.1:8000/monkey/options?name=",datafield='options',titlefield='name',minlength='2',inputclass='form-control form-control-sm',style='width:340px!important')
 
     div(class='container-fluid',style='padding:80px 30px')
       block content
