@@ -1,15 +1,15 @@
 extends layout
 
 block content
-  div(ng-controller='taskPageCtrl')
+  div(ng-controller='queryPageCtrl')
     nav(aria-label='breadcrumb')
       ol(class='breadcrumb',style='background-color:#fff')
-        li(class='breadcrumb-item')
-          a(href='/') 批量任务
-        li(class='breadcrumb-item')
-          a(href='/details/?key={{result.details.file_sha1}}&page={{details.bpage}}') {{result.details.name}}
-        li(class='breadcrumb-item active',aria-current='page') 任务结果
+        li(class='breadcrumb-item active',aria-current='page') 任务查询
+
     div(class='table-wrapper')
+      div(class='form-inline')
+        angucomplete(id='search',placeholder='搜索公司名称',pause='400',selectedobject='query',url="http://127.0.0.1:8000/monkey/options?name=",datafield='options',titlefield='name',minlength='2',inputclass='form-control',style='width:440px!important')
+        button(class='btn btn-info',ng-click='searchTask()') 查询
       div(ng-if='result.results.length==0')
         div(class='empty') 暂无任务结果信息，请耐心等待。
       div(class='result-item',ng-repeat='result in result.results')
@@ -21,7 +21,6 @@ block content
           div 网址链接：
             a(href='{{result.url}}',target='_blank') {{result.url}}
           div(ng-repeat='(key,info) in result.info') {{FIELD_HASH[key]}} : {{info}}
-
       div
         div(class='pager')
           a(class='pager-btn {{page==details.page?"active":""}}' ng-repeat='page in pages',ng-href='/task/?key={{details.key}}&page={{page}}&size={{details.size}}') {{page}}

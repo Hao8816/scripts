@@ -89,12 +89,46 @@ gearman_worker = gearman.GearmanWorker(GEARMAN_SERVERS)
 
 # 监听任务,执行任务的信息
 def search_listener(gearman_worker, gearman_job):
+    pdb.set_trace()
 
     # 解析参数
     job_data = json.loads(gearman_job.data)
-    query = job_data['query']
+    query_name = job_data['query']
+
+    # 建立连接
+    es = Elasticsearch([{'host': ES_HOST, 'port': ES_PORT }])
+
+    # 查询条件
+    must_list = [{
+        "match":
+            { "name":
+                {"query":query_name}
+            }
+        }
+    ]
+    # 构造查询语句
+    dsl = {
+        "query" : {
+          "bool":{
+              "must": must_list
+          }
+        },
+        "size" : 10
+    }
+
+    res = es.search(index="tasks", doc_type='details', body=dsl)
+    task_list = []
+    print res
+    try :
+        results =  res['hits']['hits']
+        for result in results:
+            task = result['_source']
+            task_list.append(task)
+    except:
+        pass
 
     print "处理完成"
+    job_data['options'] = task_list
     return json.dumps(job_data)
 
 # 注册worker

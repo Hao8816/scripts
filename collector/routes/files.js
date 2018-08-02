@@ -14,7 +14,20 @@ var jfum = new JFUM({
 var Gearman = require('abraxas');
 var client = Gearman.Client.connect({ servers: ['127.0.0.1:4730'], defaultEncoding:'utf8'});
 
-// 生成中间
+// 文件尺寸计算
+function size_format(b){
+    if (b < 1000){
+        return b + 'B'
+    }else if(1000 <= b < 1000000){
+        return parseFloat(b/1000) + 'KB'
+    }else if(1000000 <= b < 1000000000){
+        return parseFloat(b/1000000) + 'MB'
+    }else if(1000000000 <= b < 1000000000000){
+        return parseFloat(b/1000000000) + 'GB'
+    }else if(1000000000000 <= b ){
+        return parseFloat(b/1000000000000) + 'TB'
+    }
+}
 
 /* 文件上传. */
 router.post('/upload/',jfum.postHandler.bind(jfum),function(req, res) {
@@ -85,15 +98,33 @@ router.post('/upload/',jfum.postHandler.bind(jfum),function(req, res) {
 /* 获取文件列表 */
 router.get('/list/', function(req, res, next) {
     var query = req.query;
-    var page = query['page'];
-    var size = query['size'];
+    var page = parseInt(query['page']) || 1;
+    var size = parseInt(query['size']) || 10;
     var start_num = (page-1)*size;
     console.log(query);
     Model.File.all().limit(size).offset(start_num).run(function (err, files) {
-        console.log(files);
-        res.send({'info':'OK','files': files});
+        Model.File.count(function (err, total_counts) {
+            console.log(files);
+            var file_list = [];
+            for(var i=0;i<files.length;i++){
+                var file = files[i];
+                file['size_label'] = size_format(file.size);
+                file['status_label'] = file.status?'已处理':'待处理';
+                file_list.push(file)
+            }
+            if (total_counts % size == 0){
+                var max_page = total_counts/size;
+            }else{
+                var max_page = total_counts/size + 1;
+            }
+            var result = {
+                'max_page': max_page,
+                'total': total_counts,
+                'files': files
+            };
+            res.send({'info':'OK','result': result});
+        });
     });
-
 });
 
 /* 文件详情 */
@@ -275,6 +306,46 @@ router.get('/task/details/', function(req, res, next) {
         });
     });
 });
+
+/* 任务详情 */
+router.get('/task/details/', function(req, res, next) {
+    var query = req.query;
+    var task_sha1 = query['key'];
+    var page = parseInt(query['page']) || 1;
+    var size = parseInt(query['size']) || 10;
+    var start_num = (page-1)*size;
+    Model.Task.find({'sha1': task_sha1}).run(function (err, tasks) {
+        console.log('xxxxx',tasks);
+        if(err || tasks.length==0){
+            res.send({'info':'OK','result': {}});
+            return;
+        }
+        var task = tasks[0];
+
+        // 修改文件的处理状态
+        Model.TaskResult.find({'task_sha1': task.sha1}).limit(size).offset(start_num).run(function(err, results){
+            var headers = ['子任务名称','创建时间','链接地址','其他信息','状态','最后更新时间'];
+            var columns = [];
+            // 统计数量
+            Model.TaskResult.count({'task_sha1': task.sha1}, function (err, total_counts) {
+                console.log("We have %d Does in our db", total_counts);
+                if (total_counts % size == 0){
+                    var max_page = total_counts/size;
+                }else{
+                    var max_page = parseInt(total_counts/size) + 1;
+                }
+                var result = {
+                    'results': results,
+                    'max_page': max_page,
+                    'total': total_counts,
+                    'details': task
+                };
+                res.send({'info':'OK','result': result});
+            });
+        });
+    });
+});
+
 
 /* 文件下载 */
 router.post('/download/', function(req, res, next) {

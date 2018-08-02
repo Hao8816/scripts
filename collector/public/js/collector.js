@@ -24,7 +24,22 @@ var FIELD_HASH = {
 
 var API_URL = 'http://127.0.0.1:8000';
 // 文件上传
-app.controller('uploadPageCtrl', function uploadPageCtrl($scope, $http,  Upload){
+app.controller('uploadPageCtrl', function uploadPageCtrl($scope, $http,  Upload, Pager, $window){
+
+    // 网页查询参数
+    var query_params = $window.location.search;
+
+    $scope.getParam = function (name) {
+        var re = new RegExp("[&,?]" + name + "=([^//&]*)", "i");
+        var a = re.exec(query_params);
+        if (a == null)
+            return "";
+        return unescape(a[1]);
+    };
+
+    // 参数解析
+    var page = $scope.getParam('page') || 1;
+    var size = $scope.getParam('size') || 10;
 
     // 文件上传部分逻辑
     $scope.upload = function (file) {
@@ -54,18 +69,24 @@ app.controller('uploadPageCtrl', function uploadPageCtrl($scope, $http,  Upload)
     };
 
     // 获取文件列表
-    $scope.getFileList = function(page){
-        var url = API_URL+'/files/list/?page='+page+'&'+'size='+10;
-        $http.get(url).then(function(res){
-            var data = res['data']
-            var files = data['files'];
-            console.log('文件列表结果',files);
-            $scope.files = files;
-        })
-    };
+    var url = API_URL+'/files/list/?page='+page+'&'+'size='+size;
+    $http.get(url).then(function(res){
+        var data = res['data']
+        var result = data['result'];
+        var files = result['files'];
+        var total = result['total'];
+        console.log('文件列表结果',files);
 
-    // 默认获取
-    $scope.getFileList(1);
+        $scope.details = {'page': page,'size':10};
+
+        // 构造翻页信息
+        Pager.pages(page,result['max_page'],function(pages){
+            $scope.pages = pages;
+        });
+
+        $scope.total = total;
+        $scope.files = files;
+    });
 });
 
 app.controller('detailsPageCtrl', function detailsPageCtrl($scope, $http, $window, Pager, socket, $timeout){
@@ -157,10 +178,60 @@ app.controller('taskPageCtrl', function detailsPageCtrl($scope, $http, $window, 
     var key = $scope.getParam('key');
     var page = $scope.getParam('page') || 1;
     var size = $scope.getParam('size') || 10;
-    $scope.details = {'key': key, 'page': page,'size': size};
+    var bpage =  $scope.getParam('bpage') || 1;
+    $scope.details = {'key': key, 'page': page,'size': size,'bpage': bpage};
 
     // 获取文件列表
     var url = API_URL+'/files/task/details/?key='+key+'&page='+page+'&size='+size;
+    $http.get(url).then(function(res){
+        var data = res['data'];
+        $scope.result = data['result'];
+        var columns = $scope.result.columns;
+        $scope.columns = columns;
+
+        // 构造翻页信息
+        Pager.pages(page,data['result']['max_page'],function(pages){
+            $scope.pages = pages;
+        });
+
+        console.log('文件列表结果',data);
+    });
+});
+
+app.controller('queryPageCtrl', function queryPageCtrl($scope, $http, $window, Pager, socket, $timeout){
+
+    // 网页查询参数
+    var query_params = $window.location.search;
+    $scope.getParam = function (name) {
+        var re = new RegExp("[&,?]" + name + "=([^//&]*)", "i");
+        var a = re.exec(query_params);
+        if (a == null)
+            return "";
+        return unescape(a[1]);
+    };
+
+    $scope.FIELD_HASH = FIELD_HASH;
+
+    // 参数解析
+    var key = $scope.getParam('key');
+    var page = $scope.getParam('page') || 1;
+    var size = $scope.getParam('size') || 10;
+    $scope.details = {'key': key, 'page': page,'size': size};
+
+    if (key){
+        $scope.searchStr = escape(key);
+        $('#search').find('input').attr('value',escape(key));
+    }
+
+    // 搜索结果
+    $scope.searchTask = function(){
+        var keyword = $('#search').find('input').val();
+        console.log(keyword);
+        location.href = '/query/?key='+keyword;
+    };
+
+    // 获取文件列表
+    var url = API_URL+'/monkey/search/?key='+escape(key)+'&page='+page+'&size='+size;
     $http.get(url).then(function(res){
         var data = res['data'];
         $scope.result = data['result'];

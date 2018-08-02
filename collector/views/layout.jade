@@ -8,13 +8,14 @@ html(ng-app='collector')
     script(type='text/javascript',src='/angularjs/angular.min.js')
     script(type='text/javascript',src='/angularjs/angular-upload.min.js')
     script(type='text/javascript',src='/angularjs/angular-autocomplete.js')
+    script(type='text/javascript',src='/jquery/jquery-1.12.4.min.js')
     script(type='text/javascript',src='/js/collector.js')
     script(type='text/javascript',src='/js/directives/table-data-cell.js')
     script(type='text/javascript',src='/socket/socket.io.min.js')
 
 
   body
-    nav(class='navbar navbar-expand-lg fixed-top navbar-dark',style='background-color:#3399CC;')
+    nav(class='navbar navbar-expand-lg fixed-top navbar-dark',style='background-color:#17a2b8;')
       a(class='navbar-brand',href='#')
         img(src='/images/logo.png',height=30, style='float:left')
         span(style='padding-top:2px;margin-left:10px;margin-right:15px ') 采集器
@@ -23,12 +24,12 @@ html(ng-app='collector')
 
       div(class='collapse navbar-collapse',id='navbarSupportedContent')
         ul(class='navbar-nav mr-auto')
-          li(class='nav-item active')
+          li(class='nav-item')
             a(class='nav-link',href='/') 数据采集
               span(class='sr-only') (current)
-
-        form(class='form-inline')
-          angucomplete(id='search',placeholder='搜索公司名称',pause='400',selectedobject='query',url="http://127.0.0.1:8000/monkey/options?name=",datafield='options',titlefield='name',minlength='2',inputclass='form-control form-control-sm',style='width:340px!important')
+          li(class='nav-item')
+            a(class='nav-link',href='/query/') 结果查询
+              span(class='sr-only') (current)
 
     div(class='container-fluid',style='padding:80px 30px')
       block content

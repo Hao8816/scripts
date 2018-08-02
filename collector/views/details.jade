@@ -3,26 +3,32 @@ extends layout
 block content
   div(ng-controller='detailsPageCtrl')
     div
-      div(class='page-title-wrapper')
-        span(class='page-title') 批量任务/{{result.details.name}}
+      nav(aria-label='breadcrumb')
+        ol(class='breadcrumb',style='background-color:#fff')
+          li(class='breadcrumb-item')
+            a(href='/') 批量任务
+          li(class='breadcrumb-item active',aria-current='page') {{result.details.name}}
 
-      div(ng-show='result.details.status==0') 请选择名称
-        select(class='form-control input-sm select-item',ng-model='column_name')
+      div(ng-show='result.details.status==0',style='padding-bottom: 10px') 请选择名称
+        select(class='form-control form-control-sm select-item',ng-model='column_name')
           option(ng-repeat='header in result.headers',value='{{header}}') {{header}}
-        button(class='btn btn-sm btn-primary',ng-click='checkFile()') 开始处理
+        button(class='btn btn-sm btn-info',ng-click='checkFile()',style='margin-left:10px') 开始处理
 
-    div
+    div(class='table-wrapper')
       table(class='table')
         tr
           th(ng-repeat='header in result.headers') {{header}}
-          th 操作
+          th(ng-if='result.details.status==1') 操作
         tr(ng-repeat='column in columns')
           td(ng-repeat='header in result.headers')
             table-data-cell-item(name='column[header]',header='{{header}}')
-          td
-            a(href='/task/?key={{column.sha1}}') 修改任务
+          td(ng-if='result.details.status==1')
+            a(href='/task/?key={{column.sha1}}&bpage={{details.page}}') 查看任务结果
       div
-        a(class='pager-btn {{page==details.page?"active":""}}' ng-repeat='page in pages',ng-href='/details/?key={{details.key}}&page={{page}}&size={{details.size}}') {{page}}
+        div(class='pager')
+          a(class='pager-btn {{page==details.page?"active":""}}' ng-repeat='page in pages',ng-href='/details/?key={{details.key}}&page={{page}}&size={{details.size}}') {{page}}
+        span(class='counter') 共计 {{result.total}} 条记录
+
 
 
 

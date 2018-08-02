@@ -14,6 +14,7 @@ OS_COMMANDS = {
 WORKER_INFO = {
     'read_file': 'nohup python gearman_worker_read_file.py &',
     'save_file': 'nohup python gearman_worker_save_file.py &',
+    'suggest': 'nohup python gearman_worker_suggest.py &',
 }
 
 # 检查服务是启动

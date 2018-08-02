@@ -14,4 +14,8 @@ router.get('/task/', function(req, res, next) {
     res.render('task', { title: '任务详情' });
 });
 
+router.get('/query/', function(req, res, next) {
+    res.render('query', { title: '结果查询' });
+});
+
 module.exports = router;

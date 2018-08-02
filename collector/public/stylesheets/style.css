@@ -13,27 +13,35 @@ a {
 }
 
 .details-btn{
-    padding: 0px 10px 0px 0px;
+    padding: 0px 15px 0px 0px;
 }
 .delete-btn{
-    padding: 0px 10px 0px 0px;
+    padding: 0px 15px 0px 0px;
     color: red;
+}
+.pager{
+    display: inline-block;
 }
 .pager-btn{
     display: inline-block;
-    width: 30px;
+    width: 26px;
     padding: 4px 0px;
     border: 1px solid #ddd;
     text-align: center;
-    margin: 5px;
+    margin: 0px 8px 0px 0px;
     font-size: 13px;
     color: #333;
 }
 .pager-btn.active{
-    background-color: #3399CC;
+    background-color: #17a2b8;
     color: #fff;
-    border: 1px solid #3399CC;
+    border: 1px solid #17a2b8;
 }
+.counter{
+    font-size: 14px;
+    color: #666;
+}
+
 .nav-item.active{
     position: relative;
 }
@@ -48,7 +56,7 @@ a {
 }
 .table{
     border-collapse: collapse;
-    border-bottom: 1px solid #ddd;
+    border: 1px solid #ddd;
 }
 .table tr th{
     background-color: #f8f8f8;
@@ -81,4 +89,15 @@ a {
 .result-item .result-status{
     font-size: 13px;
     color: #333;
+}
+.table-wrapper{
+    padding: 0px 15px;
+}
+.empty{
+    border-top: 1px solid #ddd;
+    padding: 30px 10px;
+    font-size: 13px;
+    color: #999;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
 }
