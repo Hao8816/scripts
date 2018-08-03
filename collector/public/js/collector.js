@@ -95,6 +95,7 @@ app.controller('detailsPageCtrl', function detailsPageCtrl($scope, $http, $windo
     socket.on('task_update',function(res){
        console.log(res);
         var task_name = res['name'];
+        $scope.notification = res;
         if (task_hash.hasOwnProperty(task_name)){
             var task_index = task_hash[task_name];
             var column = $scope.columns[task_index];

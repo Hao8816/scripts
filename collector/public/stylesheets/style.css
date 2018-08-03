@@ -101,3 +101,10 @@ a {
     border-bottom: 1px solid #ddd;
     margin-bottom: 10px;
 }
+.notification{
+    position: absolute;
+    right: 15px;
+    top: 20px;
+    font-size: 13px;
+    text-decoration: blink;
+}

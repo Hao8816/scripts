@@ -3,11 +3,12 @@ extends layout
 block content
   div(ng-controller='detailsPageCtrl')
     div
-      nav(aria-label='breadcrumb')
+      nav(aria-label='breadcrumb',style='position:relative')
         ol(class='breadcrumb',style='background-color:#fff')
           li(class='breadcrumb-item')
             a(href='/') 批量任务
           li(class='breadcrumb-item active',aria-current='page') {{result.details.name}}
+        span(class='notification') 时间: {{notification.update_time|date:'yyyy-MM-dd HH:mm:ss'}}  任务名称: {{notification.name}}  当前页数: {{notification.current}}  总页数: {{notification.total}}
 
       div(ng-show='result.details.status==0',style='padding-bottom: 10px') 请选择名称
         select(class='form-control form-control-sm select-item',ng-model='column_name')

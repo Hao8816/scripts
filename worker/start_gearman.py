@@ -15,6 +15,8 @@ WORKER_INFO = {
     'read_file': 'nohup python gearman_worker_read_file.py &',
     'save_file': 'nohup python gearman_worker_save_file.py &',
     'suggest': 'nohup python gearman_worker_suggest.py &',
+    'search': 'nohup python gearman_worker_search.py &',
+    'index_doc': 'nohup python gearman_worker_index_doc.py &',
 }
 
 # 检查服务是启动
