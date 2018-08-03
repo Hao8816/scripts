@@ -3,6 +3,7 @@ var router = express.Router();
 var fs = require('fs');
 var Model = require('./models');
 var SHA1 = require('sha1');
+var moment = require('moment');
 
 var Gearman = require('abraxas');
 var client = Gearman.Client.connect({ servers: ['127.0.0.1:4730'], defaultEncoding:'utf8'});
@@ -50,13 +51,28 @@ router.post('/details/$', function(req, res, next) {
             return;
         }
         var dateTime = new Date().getTime();
+        var docs = [];
         for(var i=0;i<results.length;i++){
             var result = results[i];
             result.update_time = dateTime.toString();
             result.status = 1;
             result.info = info;
             result.save()
+
+            var dic = {};
+            dic['sha1'] = SHA1(result.name);
+            dic['name'] = result.name;
+            dic['update_time'] = moment(Number(result.update_time)).format();
+            dic['url'] = result.url;
+            dic['info'] = result.info;
+            dic['status'] = result.status;
+            dic['suggest'] = {'input': [result.name]};
+            docs.push(dic);
         }
+        client.submitJob('index_doc', JSON.stringify({'docs':docs})).then(function (result) {
+            console.log('发送更新消息',result);
+        });
+
         res.send({'info':'OK'});
     });
 });

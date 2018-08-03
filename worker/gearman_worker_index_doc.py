@@ -36,7 +36,6 @@ def index_doc_listener(gearman_worker, gearman_job):
     # 解析参数
     job_data = json.loads(gearman_job.data)
     documents = job_data['docs']
-    pdb.set_trace()
 
     # 建立连接
     es = Elasticsearch([{'host': ES_HOST, 'port': ES_PORT }])
