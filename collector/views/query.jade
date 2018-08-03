@@ -7,12 +7,12 @@ block content
         li(class='breadcrumb-item active',aria-current='page') 任务查询
 
     div(class='table-wrapper')
-      div(class='form-inline')
+      div(class='form-inline',style='padding-bottom:25px;')
         angucomplete(id='search',placeholder='搜索公司名称',pause='400',selectedobject='query',url="http://127.0.0.1:8000/monkey/options?name=",datafield='options',titlefield='name',minlength='2',inputclass='form-control',style='width:440px!important')
         button(class='btn btn-info',ng-click='searchTask()') 查询
       div(ng-if='result.results.length==0')
         div(class='empty') 暂无任务结果信息，请耐心等待。
-      div(class='result-item',ng-repeat='result in result.results')
+      div(class='result-item',ng-repeat='result in result.options')
         div(class='')
           a(href='{{result.url}}') {{result.name}}
           span(class='result-update-time') 最后更新时间 {{result.update_time|date:'yyyy-MM-dd HH:MM:ss'}}

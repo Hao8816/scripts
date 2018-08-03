@@ -89,7 +89,6 @@ gearman_worker = gearman.GearmanWorker(GEARMAN_SERVERS)
 
 # 监听任务,执行任务的信息
 def search_listener(gearman_worker, gearman_job):
-    pdb.set_trace()
 
     # 解析参数
     job_data = json.loads(gearman_job.data)
@@ -121,13 +120,16 @@ def search_listener(gearman_worker, gearman_job):
     print res
     try :
         results =  res['hits']['hits']
+        total_counts = res['hits']['total']
         for result in results:
             task = result['_source']
             task_list.append(task)
     except:
         pass
+        total_counts = 0
 
     print "处理完成"
+    job_data['total'] = total_counts
     job_data['options'] = task_list
     return json.dumps(job_data)
 

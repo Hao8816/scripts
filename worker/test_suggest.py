@@ -22,13 +22,13 @@ task_mapping = {
                    "type": "keyword"
                },
                "update_time" : {
-                   "type": "keyword"
+                   "type": "date"
                },
                "status" : {
                    "type": "keyword"
                },
                "info" : {
-                   "type": "keyword"
+                   "type": "object"
                }
            }
        }

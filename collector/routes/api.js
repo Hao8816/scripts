@@ -133,10 +133,9 @@ router.get('/search/', function(req, res, next) {
 
     // 实时消息更新
     client.submitJob('search', JSON.stringify({'query':name})).then(function (result) {
-        console.log('发送更新消息',result);
+        console.log('搜索插叙结果',result);
         var result = JSON.parse(result);
-        var options = result['options'];
-        res.send({ info: 'OK','options':options});
+        res.send({ info: 'OK','result':result});
     });
 });
 

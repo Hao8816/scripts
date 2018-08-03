@@ -200,51 +200,30 @@ app.controller('taskPageCtrl', function detailsPageCtrl($scope, $http, $window, 
 
 app.controller('queryPageCtrl', function queryPageCtrl($scope, $http, $window, Pager, socket, $timeout){
 
-    // 网页查询参数
-    var query_params = $window.location.search;
-    $scope.getParam = function (name) {
-        var re = new RegExp("[&,?]" + name + "=([^//&]*)", "i");
-        var a = re.exec(query_params);
-        if (a == null)
-            return "";
-        return unescape(a[1]);
-    };
-
     $scope.FIELD_HASH = FIELD_HASH;
-
-    // 参数解析
-    var key = $scope.getParam('key');
-    var page = $scope.getParam('page') || 1;
-    var size = $scope.getParam('size') || 10;
-    $scope.details = {'key': key, 'page': page,'size': size};
-
-    if (key){
-        $scope.searchStr = escape(key);
-        $('#search').find('input').attr('value',escape(key));
-    }
-
     // 搜索结果
     $scope.searchTask = function(){
+        var page = 1;
         var keyword = $('#search').find('input').val();
         console.log(keyword);
-        location.href = '/query/?key='+keyword;
+        // 获取文件列表
+        var url = API_URL+'/monkey/search/?key='+keyword+'&page='+page+'&size=10';
+        $http.get(url).then(function(res){
+            var data = res['data'];
+            $scope.result = data['result'];
+            var columns = $scope.result.options;
+            $scope.columns = columns;
+
+            // 构造翻页信息
+            Pager.pages(page,data['result']['max_page'],function(pages){
+                $scope.pages = pages;
+            });
+
+            console.log('文件列表结果',data);
+        });
     };
 
-    // 获取文件列表
-    var url = API_URL+'/monkey/search/?key='+escape(key)+'&page='+page+'&size='+size;
-    $http.get(url).then(function(res){
-        var data = res['data'];
-        $scope.result = data['result'];
-        var columns = $scope.result.columns;
-        $scope.columns = columns;
 
-        // 构造翻页信息
-        Pager.pages(page,data['result']['max_page'],function(pages){
-            $scope.pages = pages;
-        });
-
-        console.log('文件列表结果',data);
-    });
 });
 
 app.service( 'Pager', [function() {

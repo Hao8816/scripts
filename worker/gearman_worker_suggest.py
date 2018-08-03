@@ -36,14 +36,17 @@ def suggest_listener(gearman_worker, gearman_job):
     }
 
     # 查询es
-    res = es.search(index="tasks", doc_type='details', body=dsl)
-    suggest_list = res['suggest']['task-suggest']
-    options = []
-    for suggest in suggest_list:
-        suggest_query = suggest['text']
-        suggest_options = suggest['options']
-        for suggest_option in suggest_options:
-            options.append(suggest_option['_source'])
+    try:
+        res = es.search(index="tasks", doc_type='details', body=dsl)
+        suggest_list = res['suggest']['task-suggest']
+        options = []
+        for suggest in suggest_list:
+            suggest_query = suggest['text']
+            suggest_options = suggest['options']
+            for suggest_option in suggest_options:
+                options.append(suggest_option['_source'])
+    except:
+        options = []
 
     job_data['options'] = options
     return json.dumps(job_data)
