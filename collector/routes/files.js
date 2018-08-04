@@ -14,6 +14,14 @@ var jfum = new JFUM({
 var Gearman = require('abraxas');
 var client = Gearman.Client.connect({ servers: ['127.0.0.1:4730'], defaultEncoding:'utf8'});
 
+// 文件处理状态描述
+var FileStatusType = {
+    0 : '待处理',
+    1 : '正在处理',
+    2 : '已处理'
+}
+
+
 // 文件尺寸计算
 function size_format(b){
     if (b < 1000){
@@ -109,7 +117,7 @@ router.get('/list/', function(req, res, next) {
             for(var i=0;i<files.length;i++){
                 var file = files[i];
                 file['size_label'] = size_format(file.size);
-                file['status_label'] = file.status?'已处理':'待处理';
+                file['status_label'] = FileStatusType[file.status] || '未知状态';
                 file_list.push(file)
             }
             if (total_counts % size == 0){
@@ -167,7 +175,7 @@ router.get('/details/', function(req, res, next) {
                     dic['已完成'] = task.current;
                     dic['创建时间'] = task.time;
                     dic['最后更新时间'] = task.update_time;
-                    dic['状态'] = task.status;
+                    dic['状态'] = FileStatusType[task.status] || '未知状态';
                     dic['sha1'] = task.sha1;
                     dic['name'] = task.name;
                     columns.push(dic);

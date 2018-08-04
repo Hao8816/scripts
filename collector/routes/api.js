@@ -13,6 +13,7 @@ router.get('/task/', function(req, res, next) {
     // 处理一下
     var query = req.query;
     var type = query['type'];
+    var dateTime = new Date().getTime();
     if (type == 'task'){
         var base_url = 'https://www.tianyancha.com/search?key=';
         Model.Task.find({'status':0}).limit(1).run(function(err,tasks){
@@ -20,8 +21,13 @@ router.get('/task/', function(req, res, next) {
                 console.log('初始化任务失败，暂无任务',err);
                 return;
             }
-            var task_name = tasks[0].name;
-            var task_url = base_url+ encodeURIComponent(task_name);
+            var task = tasks[0];
+            //  标记任务正在进行
+            task.status = 1;
+            task.update_time = dateTime.toString();
+            task.save();
+
+            var task_url = base_url+ encodeURIComponent(task.name);
             res.send({'url':task_url});
         });
     }else if(type == 'result'){
@@ -31,6 +37,10 @@ router.get('/task/', function(req, res, next) {
                 return;
             }
             var task = tasks[0];
+            task.status = 1;
+            task.update_time = dateTime.toString();
+            task.save();
+
             res.send({'url':task.url});
         });
     }
@@ -55,7 +65,7 @@ router.post('/details/$', function(req, res, next) {
         for(var i=0;i<results.length;i++){
             var result = results[i];
             result.update_time = dateTime.toString();
-            result.status = 1;
+            result.status = 2; // 任务标记完成
             result.info = info;
             result.save()
 
@@ -84,6 +94,8 @@ router.post('/result/$', function(req, res, next) {
     console.log('爬虫返回数据',data);
     var task_info = data['task'];
     var result_list = data['result'];
+    var total_page = task_info['total'];
+    var current_page = task_info['current'];
     // 查询任务的信息
     Model.Task.find({'name':task_info['name']}).run(function(err,tasks){
         // 判断查询结果
@@ -100,9 +112,11 @@ router.post('/result/$', function(req, res, next) {
 
         // 修改任务的状态和结果信息
         var task = tasks[0];
-        task.status = 1;
-        task.total = task_info['total'];
-        task.current = task_info['current'];
+        if (total_page==current_page && current_page>0){
+            task.status = 2;  // 任务标记完成
+        }
+        task.total = total_page;
+        task.current = current_page;
         task.update_time = task_info['update_time'];
         task.save();
 
@@ -115,7 +129,7 @@ router.post('/result/$', function(req, res, next) {
             dic['task_sha1'] = task.sha1;
             dic['name'] = result['name'];
             dic['url'] = result['url'];
-            dic['status'] = 0;
+            dic['status'] = 0;  // 任务标记待处理
             task_result_list.push(dic);
         }
         // 存储结果

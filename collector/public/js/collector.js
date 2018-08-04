@@ -24,8 +24,8 @@ var FIELD_HASH = {
 
 var API_URL = 'http://127.0.0.1:8000';
 // 文件上传
-app.controller('uploadPageCtrl', function uploadPageCtrl($scope, $http,  Upload, Pager, $window){
-
+app.controller('uploadPageCtrl', function uploadPageCtrl($rootScope, $scope, $http,  Upload, Pager, $window){
+    $rootScope.page_nav = 'upload';
     // 网页查询参数
     var query_params = $window.location.search;
 
@@ -89,7 +89,8 @@ app.controller('uploadPageCtrl', function uploadPageCtrl($scope, $http,  Upload,
     });
 });
 
-app.controller('detailsPageCtrl', function detailsPageCtrl($scope, $http, $window, Pager, socket, $timeout){
+app.controller('detailsPageCtrl', function detailsPageCtrl($rootScope, $scope, $http, $window, Pager, socket, $timeout){
+    $rootScope.page_nav = 'upload';
     var task_hash = {};
     // 接受socket的更新消息
     socket.on('task_update',function(res){
@@ -161,8 +162,8 @@ app.controller('detailsPageCtrl', function detailsPageCtrl($scope, $http, $windo
 });
 
 
-app.controller('taskPageCtrl', function detailsPageCtrl($scope, $http, $window, Pager, socket, $timeout){
-
+app.controller('taskPageCtrl', function detailsPageCtrl($rootScope, $scope, $http, $window, Pager, socket, $timeout){
+    $rootScope.page_nav = 'upload';
     // 网页查询参数
     var query_params = $window.location.search;
     $scope.getParam = function (name) {
@@ -199,8 +200,8 @@ app.controller('taskPageCtrl', function detailsPageCtrl($scope, $http, $window, 
     });
 });
 
-app.controller('queryPageCtrl', function queryPageCtrl($scope, $http, $window, Pager, socket, $timeout){
-
+app.controller('queryPageCtrl', function queryPageCtrl($rootScope, $scope, $http, $window, Pager, socket, $timeout){
+    $rootScope.page_nav = 'query';
     $scope.FIELD_HASH = FIELD_HASH;
     // 搜索结果
     $scope.searchTask = function(){

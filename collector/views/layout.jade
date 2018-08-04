@@ -24,10 +24,10 @@ html(ng-app='collector')
 
       div(class='collapse navbar-collapse',id='navbarSupportedContent')
         ul(class='navbar-nav mr-auto')
-          li(class='nav-item')
+          li(class='nav-item {{page_nav=="upload"?"active":""}}')
             a(class='nav-link',href='/') 数据采集
               span(class='sr-only') (current)
-          li(class='nav-item')
+          li(class='nav-item {{page_nav=="query"?"active":""}}')
             a(class='nav-link',href='/query/') 结果查询
               span(class='sr-only') (current)
 

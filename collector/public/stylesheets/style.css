@@ -41,7 +41,10 @@ a {
     font-size: 14px;
     color: #666;
 }
-
+.nav-item{
+    min-width: 100px;
+    text-align: center;
+}
 .nav-item.active{
     position: relative;
 }

@@ -101,7 +101,10 @@ def search_listener(gearman_worker, gearman_job):
     must_list = [{
         "match":
             { "name":
-                {"query":query_name}
+                {
+                    "query":query_name,
+                    "minimum_should_match": "100%"
+                }
             }
         }
     ]
