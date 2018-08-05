@@ -8,10 +8,10 @@ block content
           li(class='breadcrumb-item')
             a(href='/') 批量任务
           li(class='breadcrumb-item active',aria-current='page') {{result.details.name}}
-        span(class='notification') 时间: {{notification.update_time|date:'yyyy-MM-dd HH:mm:ss'}}  任务名称: {{notification.name}}  当前页数: {{notification.current}}  总页数: {{notification.total}}
+        span(class='notification',ng-if='notification') 时间: {{notification.update_time|date:'yyyy-MM-dd HH:mm:ss'}}  任务名称: {{notification.name}}  当前页数: {{notification.current}}  总页数: {{notification.total}}
 
-      div(ng-show='result.details.status==0',style='padding-bottom: 10px') 请选择名称
-        select(class='form-control form-control-sm select-item',ng-model='column_name')
+      div(ng-show='result.details.status==0',style='padding:0px 10px 15px 15px') 请选择名称
+        select(class='form-control form-control-sm select-item',ng-model='column_name',style='width:200px')
           option(ng-repeat='header in result.headers',value='{{header}}') {{header}}
         button(class='btn btn-sm btn-info',ng-click='checkFile()',style='margin-left:10px') 开始处理
 

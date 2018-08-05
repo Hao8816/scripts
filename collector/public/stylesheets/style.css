@@ -65,6 +65,7 @@ a {
     background-color: #f8f8f8;
     color: #222!important;
     font-size: 14px;
+    min-width: 100px;
 }
 .table tr td,
 .table tr th{
@@ -84,6 +85,7 @@ a {
     padding: 10px 0px;
     border-top: 1px solid #ddd;
     font-size: 14px;
+    line-height: 22px;
 }
 .result-item .result-update-time{
     padding: 0px 20px;

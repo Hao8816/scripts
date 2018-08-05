@@ -10,7 +10,7 @@ block content
       div(class='form-inline',style='padding-bottom:25px;')
         angucomplete(id='search',placeholder='搜索公司名称',pause='400',selectedobject='query',url="http://127.0.0.1:8000/monkey/options?name=",datafield='options',titlefield='name',minlength='2',inputclass='form-control',style='width:440px!important')
         button(class='btn btn-info',ng-click='searchTask()') 查询
-      div(ng-if='result.results.length==0')
+      div(ng-if='!result || result.options.length==0')
         div(class='empty') 暂无任务结果信息，请耐心等待。
       div(class='result-item',ng-repeat='result in result.options')
         div(class='')
@@ -21,7 +21,7 @@ block content
           div 网址链接：
             a(href='{{result.url}}',target='_blank') {{result.url}}
           div(ng-repeat='(key,info) in result.info') {{FIELD_HASH[key]}} : {{info}}
-      div
+      div(ng-if='result.options.length==0')
         div(class='pager')
           a(class='pager-btn {{page==details.page?"active":""}}' ng-repeat='page in pages',ng-href='/task/?key={{details.key}}&page={{page}}&size={{details.size}}') {{page}}
         span(class='counter') 共计 {{result.total}} 条记录
