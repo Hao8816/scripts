@@ -189,7 +189,7 @@
       method: "POST",
       url: monkey_url,
       headers: {'Content-Type': 'application/json'},
-      data : JSON.stringify({'task': company_name, 'result': result}),
+      data : JSON.stringify({}),
       onload: function(response) {
          //这里写处理函数
          console.log(response);
